@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/GameScene.gd" type="Script" id=1]
+[ext_resource path="res://entities/character/Character.tscn" type="PackedScene" id=2]
+
+[node name="GameScene" type="Node"]
+script = ExtResource( 1 )
+character_scene = ExtResource( 2 )
+
+[node name="Button" type="Button" parent="."]
+margin_left = 307.0
+margin_top = 222.0
+margin_right = 611.0
+margin_bottom = 315.0
+
+[node name="MainCamera" type="Camera2D" parent="."]
+current = true

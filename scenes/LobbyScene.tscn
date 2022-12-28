@@ -1,0 +1,65 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scenes/LobbyScene.gd" type="Script" id=1]
+[ext_resource path="res://scenes/CreateCharacter.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/GameScene.tscn" type="PackedScene" id=3]
+
+[node name="LobbyScene" type="Node"]
+script = ExtResource( 1 )
+create_scene = ExtResource( 2 )
+game_scene = ExtResource( 3 )
+
+[node name="BtnExit" type="Button" parent="."]
+margin_left = 293.0
+margin_top = 410.0
+margin_right = 508.0
+margin_bottom = 470.0
+text = "Salir"
+
+[node name="BtnConnect" type="Button" parent="."]
+margin_left = 295.0
+margin_top = 224.0
+margin_right = 510.0
+margin_bottom = 284.0
+text = "Conectar"
+
+[node name="BtnCreate" type="Button" parent="."]
+margin_left = 299.0
+margin_top = 317.0
+margin_right = 514.0
+margin_bottom = 377.0
+text = "Crear personaje"
+
+[node name="UserName" type="LineEdit" parent="."]
+margin_left = 305.0
+margin_top = 63.0
+margin_right = 479.0
+margin_bottom = 87.0
+
+[node name="UserPassword" type="LineEdit" parent="."]
+margin_left = 310.0
+margin_top = 165.0
+margin_right = 484.0
+margin_bottom = 189.0
+
+[node name="Label" type="Label" parent="."]
+margin_left = 306.0
+margin_top = 112.0
+margin_right = 474.0
+margin_bottom = 165.0
+text = "Contraseña"
+align = 1
+valign = 1
+
+[node name="Label2" type="Label" parent="."]
+margin_left = 284.0
+margin_top = 14.0
+margin_right = 481.0
+margin_bottom = 51.0
+text = "Nombre"
+align = 1
+valign = 1
+
+[connection signal="pressed" from="BtnExit" to="." method="_on_BtnExit_pressed"]
+[connection signal="pressed" from="BtnConnect" to="." method="_on_BtnConnect_pressed"]
+[connection signal="pressed" from="BtnCreate" to="." method="_on_BtnCreate_pressed"]

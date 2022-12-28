@@ -1,0 +1,104 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scenes/CreateCharacter.gd" type="Script" id=1]
+
+[node name="CreateCharacter" type="Node"]
+script = ExtResource( 1 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="SelectGender" type="OptionButton" parent="CanvasLayer"]
+margin_left = 607.0
+margin_top = 49.0
+margin_right = 785.0
+margin_bottom = 69.0
+text = "Item 0"
+items = [ "Item 0", null, false, 1, null, "Item 1", null, false, 2, null, "Item 2", null, false, 2, null, "Item 3", null, false, 3, null, "Item 4", null, false, 4, null, "Item 5", null, false, 5, null ]
+selected = 0
+
+[node name="SelectHome" type="OptionButton" parent="CanvasLayer"]
+margin_left = 26.0
+margin_top = 55.0
+margin_right = 204.0
+margin_bottom = 75.0
+
+[node name="SelectRace" type="OptionButton" parent="CanvasLayer"]
+margin_left = 26.0
+margin_top = 163.0
+margin_right = 204.0
+margin_bottom = 184.0
+
+[node name="SelectClass" type="OptionButton" parent="CanvasLayer"]
+margin_left = 602.0
+margin_top = 156.0
+margin_right = 780.0
+margin_bottom = 176.0
+
+[node name="ThrowDices" type="Button" parent="CanvasLayer"]
+margin_left = 326.0
+margin_top = 505.0
+margin_right = 461.0
+margin_bottom = 554.0
+text = "Lanza Dados"
+
+[node name="Button" type="Button" parent="CanvasLayer"]
+margin_left = 26.0
+margin_top = 524.0
+margin_right = 145.0
+margin_bottom = 576.0
+text = "Salir"
+
+[node name="Button2" type="Button" parent="CanvasLayer"]
+margin_left = 659.0
+margin_top = 523.0
+margin_right = 778.0
+margin_bottom = 575.0
+text = "Crear Personaje"
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+margin_left = 341.0
+margin_top = 16.0
+margin_right = 463.0
+margin_bottom = 49.0
+text = "Nombre"
+align = 1
+valign = 1
+
+[node name="Label3" type="Label" parent="CanvasLayer"]
+margin_left = 334.0
+margin_top = 224.0
+margin_right = 456.0
+margin_bottom = 257.0
+text = "Contraseña"
+align = 1
+valign = 1
+
+[node name="Label2" type="Label" parent="CanvasLayer"]
+margin_left = 345.0
+margin_top = 114.0
+margin_right = 467.0
+margin_bottom = 153.0
+text = "Email
+"
+align = 1
+valign = 1
+
+[node name="UserName" type="LineEdit" parent="CanvasLayer"]
+margin_left = 278.0
+margin_top = 70.0
+margin_right = 515.0
+margin_bottom = 94.0
+
+[node name="UserPassword" type="LineEdit" parent="CanvasLayer"]
+margin_left = 282.0
+margin_top = 267.0
+margin_right = 519.0
+margin_bottom = 291.0
+
+[node name="UserEmail" type="LineEdit" parent="CanvasLayer"]
+margin_left = 284.0
+margin_top = 155.0
+margin_right = 521.0
+margin_bottom = 179.0
+
+[connection signal="pressed" from="CanvasLayer/ThrowDices" to="." method="_on_ThrowDices_pressed"]
