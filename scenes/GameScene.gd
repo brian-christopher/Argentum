@@ -10,6 +10,13 @@ var _current_map:Map
 var _characters = []
 var _main_character:Character = null
 
+var input_map = {
+	"ui_left" : Global.Heading.Left,
+	"ui_right" : Global.Heading.Right,
+	"ui_up" : Global.Heading.Up,
+	"ui_down" : Global.Heading.Down,
+}
+ 
 onready var _server_packet_names:Array = GameProtocol.ServerPacketID.keys()
 
 func initiaze(protocol:GameProtocol):
@@ -111,6 +118,17 @@ func find_character_by_id(char_id:int) -> Character:
 
 func _process(delta: float) -> void:
 	_follow_character(delta)
+
+	
+	if _main_camera:
+		if _main_character && !_main_character.is_moving:
+			for i in input_map:
+				if Input.is_action_pressed(i):
+					_main_character.move_to_heading(input_map[i])
+					_protocol.write_walk(input_map[i])
+					break
+	
+	_protocol.flush_data()
 	
 func _follow_character(_delta:float) -> void:
 	if(!_main_character): return

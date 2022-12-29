@@ -702,10 +702,19 @@ func write_login_new_char(user_name:String, user_password:String, user_race:int,
 
 func write_throw_dices():
 	auxiliarBuffer.put_u8(ClientPacketID.ThrowDices)
+	
+func write_walk(heading:int) -> void:
+	auxiliarBuffer.put_u8(ClientPacketID.Walk)
+	auxiliarBuffer.put_u8(ClientPacketID.heading)
+	
+func write_change_heading(heading:int) -> void:
+	auxiliarBuffer.put_u8(ClientPacketID.ChangeHeading)
+	auxiliarBuffer.put_u8(ClientPacketID.heading)
+
+############################################### FIN DE WRITERS ##########################################################################
+ 
 
 func flush_data():
 	if(auxiliarBuffer.get_size() > 0):
 		Connection.send_data(auxiliarBuffer.data_array)
 		auxiliarBuffer = ByteQueue.new()
-############################################### FIN DE WRITERS ##########################################################################
- 

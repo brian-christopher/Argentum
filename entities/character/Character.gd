@@ -11,6 +11,8 @@ var is_moving := false
 var grid_position_x := 0
 var grid_position_y := 0
 
+var _target_position := Vector2.ZERO
+
 func _ready() -> void:
 	pass # Replace with function body. 
 	
@@ -33,3 +35,18 @@ func set_character_name(name:String) -> void:
 
 func destroy():
 	queue_free()
+
+func move_to_heading(heading:int) -> void:
+	var direction = Vector2.ZERO
+	
+	match heading:
+		Global.Heading.Down:
+			direction = Vector2.DOWN
+		Global.Heading.Up:
+			direction = Vector2.UP
+		Global.Heading.Left:
+			direction = Vector2.LEFT
+		Global.Heading.Right:
+			direction = Vector2.RIGHT
+		
+	_target_position = position + (direction * 32.0)
