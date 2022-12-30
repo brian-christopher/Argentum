@@ -185,3 +185,19 @@ func _load_grh_data():
 			grh.region.size.y = buffer.get_16()
 	
 		grh_data[grh_id] = grh   
+	
+func heading_to_vector(heading:int) -> Vector2:
+	match heading:
+		Heading.Left:
+			return Vector2.LEFT
+		Heading.Right:
+			return Vector2.RIGHT
+		Heading.Up:
+			return Vector2.UP
+		Heading.Down:
+			return Vector2.DOWN
+	
+	print("heading con una valor invalido")
+	return Vector2.ZERO
+
+ 

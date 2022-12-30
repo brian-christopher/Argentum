@@ -411,6 +411,8 @@ func _init_handlers():
 	_handlers[ServerPacketID.CharacterChange] = "_handle_character_change"
 	_handlers[ServerPacketID.CharacterRemove] = "_handle_character_remove"
 	_handlers[ServerPacketID.PauseToggle] = "_handle_pause_toggle" 
+	_handlers[ServerPacketID.PosUpdate] = "_handle_pos_update"
+	_handlers[ServerPacketID.RemoveDialogs] = "_handle_remove_dialogs"
 
 func handle_incoming_data(bytes):
 	var buffer = ByteQueue.new()
@@ -493,8 +495,8 @@ func _handle_play_midi(buffer:StreamPeerBuffer) -> Dictionary:
 func _handle_area_changed(buffer:StreamPeerBuffer) -> Dictionary:
 	var data = {}	
 
-	data.area_x = buffer.get_u8()
-	data.area_y = buffer.get_u8()
+	data.x = buffer.get_u8()
+	data.y = buffer.get_u8()
 	
 	return data 
 	
@@ -659,7 +661,15 @@ func _handle_character_remove(buffer:StreamPeerBuffer) -> int:
 func _handle_pause_toggle(_buffer:StreamPeerBuffer):
 	pass
 	
+func _handle_pos_update(buffer:StreamPeerBuffer) -> Dictionary:
+	var data = {}
+	data.x = buffer.get_u8()
+	data.y = buffer.get_u8()
+	
+	return data
 
+func _handle_remove_dialogs(_buffer):
+	pass
 		
 ############################################### FIN DE HANDLERS ##########################################################################
 
@@ -705,11 +715,11 @@ func write_throw_dices():
 	
 func write_walk(heading:int) -> void:
 	auxiliarBuffer.put_u8(ClientPacketID.Walk)
-	auxiliarBuffer.put_u8(ClientPacketID.heading)
+	auxiliarBuffer.put_u8(heading)
 	
 func write_change_heading(heading:int) -> void:
 	auxiliarBuffer.put_u8(ClientPacketID.ChangeHeading)
-	auxiliarBuffer.put_u8(ClientPacketID.heading)
+	auxiliarBuffer.put_u8(heading)
 
 ############################################### FIN DE WRITERS ##########################################################################
  

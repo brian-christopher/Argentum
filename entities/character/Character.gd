@@ -7,6 +7,8 @@ onready var char_name = $Name
 var guid := 0
 
 var is_moving := false
+var heading:int =  Global.Heading.Down
+var speed := 150
 
 var grid_position_x := 0
 var grid_position_y := 0
@@ -26,6 +28,7 @@ func set_grid_positioon(x:int, y:int) -> void:
 	position.y = grid_position_y * Global.TILE_SIZE
 	
 	position += offset
+	is_moving = false
 	 
 func set_character_name(name:String) -> void:
 	if(! is_inside_tree()):
@@ -37,6 +40,10 @@ func destroy():
 	queue_free()
 
 func move_to_heading(heading:int) -> void:
+	if is_moving:
+		position = _target_position
+		is_moving = false
+	
 	var direction = Vector2.ZERO
 	
 	match heading:
@@ -48,5 +55,20 @@ func move_to_heading(heading:int) -> void:
 			direction = Vector2.LEFT
 		Global.Heading.Right:
 			direction = Vector2.RIGHT
+			
+		
+	grid_position_x += Global.heading_to_vector(heading).x
+	grid_position_y += Global.heading_to_vector(heading).y
 		
 	_target_position = position + (direction * 32.0)
+	is_moving = true
+
+func _process(delta: float) -> void:
+	_process_movement(delta)
+	
+func _process_movement(delta:float) -> void:
+	if !is_moving: return
+	
+	position = position.move_toward(_target_position, delta * speed)
+	if position == _target_position:
+		is_moving = false
