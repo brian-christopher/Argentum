@@ -413,6 +413,9 @@ func _init_handlers():
 	_handlers[ServerPacketID.PauseToggle] = "_handle_pause_toggle" 
 	_handlers[ServerPacketID.PosUpdate] = "_handle_pos_update"
 	_handlers[ServerPacketID.RemoveDialogs] = "_handle_remove_dialogs"
+	_handlers[ServerPacketID.SendSkills]  = "_handle_send_skills"
+	_handlers[ServerPacketID.Disconnect] = "_handle_disconnect"
+	_handlers[ServerPacketID.ObjectDelete] = "_handle_object_delete"
 
 func handle_incoming_data(bytes):
 	var buffer = ByteQueue.new()
@@ -670,7 +673,26 @@ func _handle_pos_update(buffer:StreamPeerBuffer) -> Dictionary:
 
 func _handle_remove_dialogs(_buffer):
 	pass
+	
+func _handle_send_skills(buffer:StreamPeerBuffer) -> Array:
+	var skills = []
+	
+	for i in range(Global.MAXSKILLPOINTS):
+		skills.append(buffer.get_u8())
 		
+	return skills 
+	
+func _handle_disconnect(_buffer):
+	return
+	
+func _handle_object_delete(buffer:StreamPeerBuffer) -> Dictionary:
+	var data = {}
+	
+	data.x = buffer.get_u8()
+	data.y = buffer.get_u8()
+	
+	return data
+	
 ############################################### FIN DE HANDLERS ##########################################################################
 
 

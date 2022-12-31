@@ -39,19 +39,19 @@ func area_changed(x:int, y:int) -> void:
 	_min_limit_y = (int(y / 9) - 1) * 9
 	_max_limit_y = _min_limit_y + 26
 	
-	_visible_area =Rect2(_min_limit_x, _min_limit_y, _max_limit_x, _max_limit_y)
+	_visible_area = Rect2(_min_limit_x  , _min_limit_y , _max_limit_x , _max_limit_y)
 	
 	var rem_chars = []
 	var rem_item = []
 	
 	for character in _characters:
-		if _visible_area.has_point(Vector2(character.grid_position_x, character.grid_position_y)):
+		if !_visible_area.has_point(Vector2(character.grid_position_x +1  , character.grid_position_y + 1 )):
 			rem_chars.append(character)
 			 
 		# if character.grid_position_y +1  < _min_limit_y or character.grid_position_y + 1 > _max_limit_y or character.grid_position_x + 1 < _min_limit_x or character.grid_position_x + 1 > _max_limit_x:
 				
 	for item in _items:
-		if _visible_area.has_point(Vector2(item.x, item.y)):
+		if !_visible_area.has_point(Vector2(item.x + 1 , item.y  + 1)):
 		#if item.y < _min_limit_y or item.y > _max_limit_y or item.x < _min_limit_x or item.x > _max_limit_x:
 				rem_item.append({x= item.x, y = item.y})
 				
@@ -69,6 +69,12 @@ func add_item(x:int, y:int, grh_id:int) -> void:
 	if grh_id == 0 || !Global.grh_data.has(grh_id):
 		print("grh con un id[%d] invalido en x[%d] y[%d]" % [grh_id, x, y])
 		return
+		
+	for i in range(_items.size()):
+		if _items[i].x == x and _items[i].y == y:
+			_items[i].node.queue_free()
+			_items.remove(i)
+			break
 		
 	if Global.grh_data[grh_id].num_frames > 1:
 		grh_id = Global.grh_data[grh_id].frames[1]
@@ -92,18 +98,19 @@ func add_item(x:int, y:int, grh_id:int) -> void:
 	_items.append({x = x, y = y, node = item})
 	
 func remove_item(x:int, y:int):
-	var index = -1
 	
 	for i in range(_items.size()):	
 		if _items[i].x == x and _items[i].y == y:
 			_items[i].node.queue_free()
-			index = i
+			_items.remove(i)
 			break
-	
-	if index != -1:
-		_items.remove(index)
 
 func add_character(character:Character) -> void:
+	var old_character = find_character(character.guid)
+	if old_character:
+		_characters.erase(old_character)
+		old_character.destroy()
+	
 	_characters.append(character)
 	entities_container.add_child(character)  
 
@@ -112,8 +119,9 @@ func remove_character_by_id(char_id:int) -> void:
 	if character:
 		_characters.erase(character)
 		character.destroy()
+		 
 		
-func move_character_by_heading(char_id:int, heading:int) -> void:
+func move_character_by_heading(char_id:int, heading:int, new_indec:Vector2) -> void:
 	var character = find_character(char_id)
 	
 	if character:
@@ -121,9 +129,13 @@ func move_character_by_heading(char_id:int, heading:int) -> void:
 		
 		var x = character.grid_position_x
 		var y = character.grid_position_y
+		 
+		
+		if (new_indec.y < _min_limit_y) or (new_indec.y > _max_limit_y) or (new_indec.x < _min_limit_x) or (new_indec.x > _max_limit_x):
+		#if !_visible_area.has_point(new_indec - Vector2(1, 1)):
+			_characters.erase(character)
+			character.destroy()
 	
-		if y < _min_limit_y or y > _max_limit_y or x < _min_limit_x or x > _max_limit_x:
-			remove_character_by_id(char_id)
 		
 func find_character(char_id:int) -> Character:
 	for i in _characters:

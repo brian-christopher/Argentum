@@ -1,17 +1,54 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scenes/GameScene.gd" type="Script" id=1]
 [ext_resource path="res://entities/character/Character.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/MapContainer.gd" type="Script" id=3]
 
 [node name="GameScene" type="Node"]
 script = ExtResource( 1 )
 character_scene = ExtResource( 2 )
 
-[node name="Button" type="Button" parent="."]
-margin_left = 307.0
-margin_top = 222.0
-margin_right = 611.0
-margin_bottom = 315.0
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="MainCamera" type="Camera2D" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/separation = 0
+
+[node name="Container" type="HBoxContainer" parent="CanvasLayer/HBoxContainer"]
+margin_right = 950.0
+margin_bottom = 720.0
+rect_min_size = Vector2( 950, 0 )
+size_flags_horizontal = 3
+
+[node name="ViewportContainer" type="ViewportContainer" parent="CanvasLayer/HBoxContainer/Container"]
+margin_right = 950.0
+margin_bottom = 720.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+stretch = true
+
+[node name="Viewport" type="Viewport" parent="CanvasLayer/HBoxContainer/Container/ViewportContainer"]
+size = Vector2( 544, 416 )
+handle_input_locally = false
+usage = 0
+render_target_update_mode = 3
+audio_listener_enable_2d = true
+
+[node name="MapContainer" type="Node2D" parent="CanvasLayer/HBoxContainer/Container/ViewportContainer/Viewport"]
+script = ExtResource( 3 )
+
+[node name="MainCamera" type="Camera2D" parent="CanvasLayer/HBoxContainer/Container/ViewportContainer/Viewport"]
 current = true
+
+[node name="Container2" type="HBoxContainer" parent="CanvasLayer/HBoxContainer"]
+margin_left = 950.0
+margin_right = 1280.0
+margin_bottom = 720.0
+size_flags_horizontal = 3
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/HBoxContainer/Container2"]
+margin_right = 330.0
+margin_bottom = 720.0
+size_flags_horizontal = 3
+color = Color( 0.47451, 0.145098, 0.145098, 1 )

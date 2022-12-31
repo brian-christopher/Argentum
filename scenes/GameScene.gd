@@ -2,10 +2,11 @@ extends Node
   
 export(PackedScene) var character_scene
 
-onready var _main_camera = $MainCamera
+onready var _main_camera = find_node("MainCamera")
+onready var _map_container = find_node("MapContainer")
+ 
 var _protocol:GameProtocol
-var _player_stats:PlayerStats
-var _current_map:Map
+var _player_stats:PlayerStats 
   
 var _main_character_id := 0
 
@@ -42,6 +43,8 @@ func _on_parse_data(packet_id:int, data):
 			pass
 		GameProtocol.ServerPacketID.RemoveDialogs:
 			pass
+		GameProtocol.ServerPacketID.Disconnect:
+			_on_disconnected()
 		
 		GameProtocol.ServerPacketID.ChangeMap:
 			_change_map(data)
@@ -62,6 +65,9 @@ func _on_parse_data(packet_id:int, data):
 			_parse_area_changed(data)
 		GameProtocol.ServerPacketID.CharacterMove:
 			_parse_character_move(data)
+		GameProtocol.ServerPacketID.ObjectDelete:
+			_parse_object_delete(data)
+
 
 		
 		_:
@@ -87,50 +93,55 @@ func _parse_create_character(data:Dictionary) -> void:
 	var character = character_scene.instance() as Character
 	character.guid = data.char_id
 	
+	if _map_container.current_map:
+		_map_container.current_map.add_character(character)
+	
 	character.set_grid_positioon(data.x - 1, data.y - 1)
 	character.set_character_name(data.name)
 	
-	if _current_map:
-		_current_map.add_character(character)
+	character.heading = data.heading
+	character.weapon = data.weapon
+	character.shield = data.shield
+	character.body = data.body
+	character.head = data.head
+	character.helmet = data.helmet
+	character.privs = data.privs
+	character.criminal = data.criminal
+	
 	
 func _change_map(data:Dictionary) -> void:
-	if _current_map:
-		_current_map.queue_free()
-		_current_map = null
-	
-	_current_map = load("res://engine/Map.tscn").instance()
-	add_child(_current_map)
-	_current_map.load_map(data.map_id)
-	_current_map.set_main_character_id(_main_character_id)
-	
+	_map_container.set_main_character_id(_main_character_id)
+	_map_container.switch_map(data.map_id)
+
 func _parse_character_remove(char_id:int) -> void:
-	if _current_map:
-		_current_map.remove_character_by_id(char_id)
+	if _map_container.current_map:
+		_map_container.current_map.remove_character_by_id(char_id) 
 	
 func _parse_user_char_index_in_server(char_id:int) -> void:
 	_main_character_id = char_id 
+	_map_container.set_main_character_id(_main_character_id)
 		
 func _parse_object_create(data:Dictionary) -> void:
-	if !_current_map: return
+	if !_map_container.current_map: return
 	
-	_current_map.add_item(data.x - 1, data.y - 1, data.grh_index)
+	_map_container.current_map.add_item(data.x - 1, data.y - 1, data.grh_index)
 	
 func _parse_pos_update(data:Dictionary) -> void:
-	if _current_map:
-		var main_character = _current_map.find_character(_main_character_id)
+	if _map_container.current_map:
+		var main_character = _map_container.current_map.find_character(_main_character_id)
 		 
 		if main_character:
 			main_character.set_grid_positioon(data.x -1 , data.y - 1)
 		
 func _parse_area_changed(data:Dictionary) -> void:
-	if !_current_map: return
+	if !_map_container.current_map: return
 	
-	_current_map.area_changed(data.x, data.y)
+	_map_container.current_map.area_changed(data.x, data.y)
 	
 func _parse_character_move(data:Dictionary) -> void:
-	if !_current_map: return
+	if !_map_container.current_map: return
 	
-	var character = _current_map.find_character(data.char_id)
+	var character = _map_container.current_map.find_character(data.char_id)
 	if character:
 		var x = (data.x) - (character.grid_position_x + 1)
 		var y = (data.y) - (character.grid_position_y + 1)
@@ -149,13 +160,17 @@ func _parse_character_move(data:Dictionary) -> void:
 		if(sign(y) == -1):
 			heading = Global.Heading.Up
  
-		_current_map.move_character_by_heading(data.char_id, heading)
+		_map_container.current_map.move_character_by_heading(data.char_id, heading, Vector2(data.x, data.y))
+
+func _parse_object_delete(data:Dictionary) -> void:
+	if _map_container.current_map:
+		_map_container.current_map.remove_item(data.x - 1, data.y - 1)
 	
 func _process(delta: float) -> void:
 	_follow_character(delta)
 
-	if _current_map:
-		var main_character = _current_map.find_character(_main_character_id)
+	if _map_container.current_map:
+		var main_character = _map_container.current_map.find_character(_main_character_id)
 		
 		
 		if main_character && !main_character.is_moving:
@@ -165,7 +180,7 @@ func _process(delta: float) -> void:
 					var new_position_x = main_character.grid_position_x + offset.x
 					var new_position_y = main_character.grid_position_y + offset.y
 					
-					if _current_map.can_walk(new_position_x, new_position_y):
+					if _map_container.current_map.can_walk(new_position_x, new_position_y):
 						main_character.move_to_heading(input_map[i])
 						_protocol.write_walk(input_map[i])
 						break
@@ -173,9 +188,9 @@ func _process(delta: float) -> void:
 	_protocol.flush_data()
 	
 func _follow_character(_delta:float) -> void:
-	if !_current_map: return
+	if !_map_container.current_map: return
 	
-	var main_character = _current_map.find_character(_main_character_id)
+	var main_character = _map_container.current_map.find_character(_main_character_id)
 	if main_character:
 		_main_camera.position = main_character.position
 

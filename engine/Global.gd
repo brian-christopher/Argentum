@@ -18,6 +18,8 @@ const TILE_SIZE = 32
 const MAP_WIDTH = 100
 const MAP_HEIGHT = 100
 
+const NO_ANIMAR = 2
+
 enum eClass{
 	Mage = 1    #Mago
 	Cleric      #Clérigo

@@ -31,3 +31,20 @@ text = "asdasdasdasdaasdasdasdasdassdasdasdasdasdas"
 align = 1
 valign = 1
 clip_text = true
+
+[node name="Outfit" type="Node2D" parent="."]
+
+[node name="Body" type="Sprite" parent="Outfit"]
+region_enabled = true
+
+[node name="Head" type="Sprite" parent="Outfit"]
+region_enabled = true
+
+[node name="Helmet" type="Sprite" parent="Outfit"]
+region_enabled = true
+
+[node name="Weapon" type="Sprite" parent="Outfit"]
+region_enabled = true
+
+[node name="Shield" type="Sprite" parent="Outfit"]
+region_enabled = true

@@ -13,7 +13,16 @@ var speed := 150
 var grid_position_x := 0
 var grid_position_y := 0
 
+var criminal := 0
+var privs := 0
+
 var _target_position := Vector2.ZERO
+
+var body := 0 setget set_body
+var head := 0 setget set_head
+var helmet := 0 setget set_helmet
+var weapon := 0 setget set_weapon
+var shield := 0 setget set_shield
 
 func _ready() -> void:
 	pass # Replace with function body. 
@@ -72,3 +81,23 @@ func _process_movement(delta:float) -> void:
 	position = position.move_toward(_target_position, delta * speed)
 	if position == _target_position:
 		is_moving = false
+
+func set_weapon(id:int) -> void:
+	if id == 0 or id == Global.NO_ANIMAR:
+		$Outfit/Weapon.visible = false
+
+func set_shield(id:int) -> void:
+	if id == 0 or id == Global.NO_ANIMAR:
+		$Outfit/Shield.visible = false
+ 
+func set_body(id:int) -> void:
+	if id == 0 or id == Global.NO_ANIMAR:
+		$Outfit/Body.visible = false
+
+func set_head(id:int) -> void:
+	if id == 0 or id == Global.NO_ANIMAR:
+		$Outfit/Head.visible = false
+		
+func set_helmet(id:int) -> void:
+	if id == 0 or id == Global.NO_ANIMAR:
+		$Outfit/Helmet.visible = false
