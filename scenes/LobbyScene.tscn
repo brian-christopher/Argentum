@@ -35,12 +35,14 @@ margin_left = 305.0
 margin_top = 63.0
 margin_right = 479.0
 margin_bottom = 87.0
+text = "asd"
 
 [node name="UserPassword" type="LineEdit" parent="."]
 margin_left = 310.0
 margin_top = 165.0
 margin_right = 484.0
 margin_bottom = 189.0
+text = "123123"
 
 [node name="Label" type="Label" parent="."]
 margin_left = 306.0

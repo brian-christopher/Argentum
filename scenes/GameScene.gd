@@ -140,18 +140,15 @@ func _parse_character_move(data:Dictionary) -> void:
 		if(sign(x) == 1):
 			heading = Global.Heading.Right
 		
-		elif(sign(x) == -1):
+		if(sign(x) == -1):
 			heading = Global.Heading.Left
 		
 		if(sign(y) == 1):
-			heading = Global.Heading.Up
-		
-		elif(sign(y) == -1):
 			heading = Global.Heading.Down
-			
-		print("r_x = %d  c_x = %d  n_x = %d" % [character.grid_position_x, data.x, x])
-		print("r_y = %d  c_y = %d  n_y = %d" % [character.grid_position_y, data.y, y]) 
-			
+		
+		if(sign(y) == -1):
+			heading = Global.Heading.Up
+ 
 		_current_map.move_character_by_heading(data.char_id, heading)
 	
 func _process(delta: float) -> void:

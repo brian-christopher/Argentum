@@ -21,6 +21,8 @@ var _min_limit_y := 0
 var _max_limit_x := 0
 var _max_limit_y := 0
 
+var _visible_area:Rect2
+
 onready var entities_container = $Overlap/Entities
  
 func _init() -> void: 
@@ -37,15 +39,20 @@ func area_changed(x:int, y:int) -> void:
 	_min_limit_y = (int(y / 9) - 1) * 9
 	_max_limit_y = _min_limit_y + 26
 	
+	_visible_area =Rect2(_min_limit_x, _min_limit_y, _max_limit_x, _max_limit_y)
+	
 	var rem_chars = []
 	var rem_item = []
 	
 	for character in _characters:
-		 if character.grid_position_y < _min_limit_y or character.grid_position_y > _max_limit_y or character.grid_position_x < _min_limit_x or character.grid_position_x > _max_limit_x:
-				rem_chars.append(character)
+		if _visible_area.has_point(Vector2(character.grid_position_x, character.grid_position_y)):
+			rem_chars.append(character)
+			 
+		# if character.grid_position_y +1  < _min_limit_y or character.grid_position_y + 1 > _max_limit_y or character.grid_position_x + 1 < _min_limit_x or character.grid_position_x + 1 > _max_limit_x:
 				
 	for item in _items:
-		if item.y < _min_limit_y or item.y > _max_limit_y or item.x < _min_limit_x or item.x > _max_limit_x:
+		if _visible_area.has_point(Vector2(item.x, item.y)):
+		#if item.y < _min_limit_y or item.y > _max_limit_y or item.x < _min_limit_x or item.x > _max_limit_x:
 				rem_item.append({x= item.x, y = item.y})
 				
 	for i in rem_chars:
