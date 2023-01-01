@@ -51,3 +51,22 @@ region_enabled = true
 script = ExtResource( 3 )
 
 [node name="Effects" type="Node2D" parent="."]
+
+[node name="Dialog" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -186.0
+margin_top = -197.0
+margin_right = 186.0
+margin_bottom = -59.0
+align = 1
+valign = 2
+autowrap = true
+clip_text = true
+
+[node name="RemoveDialog" type="Timer" parent="."]
+wait_time = 10.0
+
+[connection signal="timeout" from="RemoveDialog" to="." method="_on_RemoveDialog_timeout"]

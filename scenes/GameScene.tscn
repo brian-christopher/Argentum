@@ -52,3 +52,29 @@ margin_right = 330.0
 margin_bottom = 720.0
 size_flags_horizontal = 3
 color = Color( 0.47451, 0.145098, 0.145098, 1 )
+
+[node name="CanvasLayer2" type="CanvasLayer" parent="."]
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer2"]
+margin_right = 717.0
+margin_bottom = 144.0
+text = "adwaw :> AWDawdawdwadawdawdwadawd
+adwaw :> AWDawdawdwadawdawdwadawd
+adwaw :> AWDawdawdwadawdawdwadawd
+adwaw :> AWDawdawdwadawdawdwadawd
+adwaw :> AWDawdawdwadawdawdwadawd
+adwaw :> AWDawdawdwadawdawdwadawd
+adwaw :> AWDawdawdwadawdawdwadawd
+adwaw :> AWDawdawdwadawdawdwadawd
+adwaw :> AWDawdawdwadawdawdwadawd
+adwaw :> AWDawdawdwadawdawdwadawd
+adwaw :> AWDawdawdwadawdawdwadawd
+adwaw :> AWDawdawdwadawdawdwadawd
+adwaw :> AWDawdawdwadawdawdwadawd
+adwaw :> AWDawdawdwadawdawdwadawd
+adwaw :> AWDawdawdwadawdawdwadawd
+adwaw :> AWDawdawdwadawdawdwadawd
+adwaw :> AWDawdawdwadawdawdwadawd
+adwaw :> AWDawdawdwadawdawdwadawd
+adwaw :> AWDawdawdwadawdawdwadawd 
+adwaw :> AWDawdawdwadawdawdwadawd"

@@ -43,6 +43,9 @@ func _on_parse_data(packet_id:int, data):
 			pass
 		GameProtocol.ServerPacketID.RemoveDialogs:
 			pass
+		GameProtocol.ServerPacketID.UserIndexInServer:
+			pass
+			
 		GameProtocol.ServerPacketID.Disconnect:
 			_on_disconnected()
 		
@@ -81,11 +84,28 @@ func _on_parse_data(packet_id:int, data):
 			_parse_play_midi(data)
 		GameProtocol.ServerPacketID.PlayWave:
 			_parse_play_wave(data)
-	
+		GameProtocol.ServerPacketID.ChatOverHead:
+			_parse_chat_over_head(data)
+		GameProtocol.ServerPacketID.RemoveCharDialog:
+			_parse_remove_char_dialog(data)	
  
 		_:
 			print(_server_packet_names[packet_id])
 			
+func _parse_chat_over_head(data:Dictionary) -> void:
+	if !_map_container.current_map: return
+	
+	var character = _map_container.current_map.find_character(data.char_id)
+	if character:
+		character.talk(data.message, data.color)
+		
+func _parse_remove_char_dialog(char_id:int) -> void:
+	if !_map_container.current_map: return
+	
+	var character = _map_container.current_map.find_character(char_id)
+	if character:
+		character.talk("") 
+	
 func _parse_play_wave(data:Dictionary) -> void:
 	AudioManager.play_sfx2d_from_id(data.wave, data.x, data.y)
 

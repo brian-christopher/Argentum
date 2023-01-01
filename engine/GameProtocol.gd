@@ -407,7 +407,7 @@ func _init_handlers():
 	_handlers[ServerPacketID.ShowMessageBox] = "_handle_show_message_box"
 	_handlers[ServerPacketID.CharacterMove] = "_handle_character_move"
 	_handlers[ServerPacketID.UpdateSta] = "_handle_update_sta"
-	_handlers[ServerPacketID.ChatOverHead] = "_handle_char_over_head"
+	_handlers[ServerPacketID.ChatOverHead] = "_handle_chat_over_head"
 	_handlers[ServerPacketID.CharacterChange] = "_handle_character_change"
 	_handlers[ServerPacketID.CharacterRemove] = "_handle_character_remove"
 	_handlers[ServerPacketID.PauseToggle] = "_handle_pause_toggle" 
@@ -633,7 +633,7 @@ func _handle_character_move(buffer:StreamPeerBuffer) -> Dictionary:
 func _handle_update_sta(buffer:StreamPeerBuffer) -> int:
 	return buffer.get_16()
 	
-func _handle_char_over_head(buffer:StreamPeerBuffer) -> Dictionary:
+func _handle_chat_over_head(buffer:StreamPeerBuffer) -> Dictionary:
 	var data = {}
 	
 	data.message = buffer.get_utf8_string()

@@ -14,7 +14,7 @@ var guid := 0
 
 var is_moving := false setget set_is_moving
 var heading:int =  Global.Heading.Down setget set_heading
-var speed := 150
+var speed := 130
 
 var grid_position_x := 0
 var grid_position_y := 0
@@ -130,3 +130,12 @@ func set_helmet(id:int) -> void:
 	_helmet_sprite.offset_x = Global.bodies_data[body].offsetX 
 	_helmet_sprite.offset_y = Global.bodies_data[body].offsetY
 	_helmet_sprite.initalize(Global.helmets_data[id]) 
+	
+func talk(message:String, color:Color = Color.white) -> void:
+	$Dialog.text = message
+	$Dialog.self_modulate = color
+	
+	$RemoveDialog.start()
+
+func _on_RemoveDialog_timeout() -> void:
+	$Dialog.text = ""

@@ -51,8 +51,10 @@ func initalize(data:Dictionary) -> void:
 	_frames.down = FrameKey.new(data.down) 
 	
 	_update_animation()
-	_frame_time = 0.5 #frames[_current_animation_id].speed
-	 
+	_frame_time = 0.05 #frames[_current_animation_id].speed
+	#tiempo para que cambie al otro frame 
+	
+	
 func set_heading(heading:int) -> void:
 	if _heading == heading: return 
 	_heading = heading
@@ -82,11 +84,12 @@ func _process(delta: float) -> void:
 	if _frames.size() == 0: return
 	if _frames[_current_animation_id].size() == 0: return
 	
-	_current_time += delta *  0.5
+	_current_time += 0.02
 	if(_current_time >= _frame_time):
 		_current_time = 0
 		_current_frame = (_current_frame + 1) % _frames[_current_animation_id].size() 
 		_update_animation()
+	
 	
 func _update_animation():
 	if _frames.size() > 0:
