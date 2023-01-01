@@ -66,7 +66,7 @@ func set_main_character_id(char_id:int) -> void:
 	_main_character_id = char_id
 	
 func add_item(x:int, y:int, grh_id:int) -> void:
-	if grh_id == 0 || !Global.grh_data.has(grh_id):
+	if grh_id == 0 || grh_id > Global.grh_data.size():
 		print("grh con un id[%d] invalido en x[%d] y[%d]" % [grh_id, x, y])
 		return
 		
@@ -197,7 +197,7 @@ func _gen_tile_set(tiles:Array) -> TileSet:
 	var tile_set = TileSet.new()
 	
 	for tile in tiles:
-		if Global.grh_data.has(tile):
+		if tile <= Global.grh_data.size():
 			var current_tile = tile
 			if Global.grh_data[tile].num_frames > 1:
 				current_tile = Global.grh_data[tile].frames[1]

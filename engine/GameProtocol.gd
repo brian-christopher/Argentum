@@ -416,6 +416,8 @@ func _init_handlers():
 	_handlers[ServerPacketID.SendSkills]  = "_handle_send_skills"
 	_handlers[ServerPacketID.Disconnect] = "_handle_disconnect"
 	_handlers[ServerPacketID.ObjectDelete] = "_handle_object_delete"
+	_handlers[ServerPacketID.UpdateHP] = "_handle_update_hp"
+	_handlers[ServerPacketID.NPCHitUser] = "_handle_npc_hit_user"
 
 func handle_incoming_data(bytes):
 	var buffer = ByteQueue.new()
@@ -692,7 +694,13 @@ func _handle_object_delete(buffer:StreamPeerBuffer) -> Dictionary:
 	data.y = buffer.get_u8()
 	
 	return data
+
+func _handle_update_hp(buffer:StreamPeerBuffer) -> int:
+	return buffer.get_16()	
 	
+func _handle_npc_hit_user(buffer:StreamPeerBuffer) -> int:
+	return buffer.get_16()
+
 ############################################### FIN DE HANDLERS ##########################################################################
 
 

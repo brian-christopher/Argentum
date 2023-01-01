@@ -1,6 +1,12 @@
 extends Node
 
-const grh_data = {}
+const grh_data = []
+var bodies_data = {}
+var heads_data = {}
+var helmets_data = {}
+var weapons_data = {}
+var shields_data = {}
+var fxs_data = {}
 
 const NUMATRIBUTES = 5
 const MAX_INVENTORY_OBJS = 10000
@@ -144,9 +150,35 @@ enum eObjType{
 	otCualquiera = 1000
 }
 
+class GrhData:
+	var region = Rect2()
+	var file_num  = 0
+	var num_frames = 0
+	var frames = []
+	var speed = 0.0
+
 func _ready():
 	_load_grh_data() 
+	_load_ao_resources()
 	
+func load_json_from_file(filename:String):
+	var file = File.new()
+	file.open(filename, file.READ)
+	
+	var json = file.get_as_text()
+	var json_result = JSON.parse(json).result
+	
+	file.close()
+	return json_result
+	 
+func _load_ao_resources():
+	bodies_data  = load_json_from_file("res://assets/data/bodies_data.json")
+	helmets_data = load_json_from_file("res://assets/data/helmets_data.json")
+	heads_data   = load_json_from_file("res://assets/data/heads_data.json")
+	weapons_data = load_json_from_file("res://assets/data/weapons_data.json")
+	shields_data = load_json_from_file("res://assets/data/shields_data.json") 
+	fxs_data 	 = load_json_from_file("res://assets/data/fxs_data.json") 
+		
 func _load_grh_data():
 	var file = File.new()
 	file.open("res://assets/init/graficos.ind", File.READ)
@@ -156,13 +188,16 @@ func _load_grh_data():
 	
 	buffer.data_array = content
 	
-	buffer.get_32()
+	var size = buffer.get_32()
 	
 	var _grh_count = buffer.get_32()
+	grh_data.resize(_grh_count + 1)
+	grh_data.fill(GrhData.new())
 	
 	while(buffer.get_position() < buffer.get_size()):
 		var grh_id = buffer.get_32()
-		var grh = {}
+		var grh = GrhData.new()
+		
 		
 		grh.num_frames = buffer.get_16()
 		grh.frames = []
@@ -187,6 +222,7 @@ func _load_grh_data():
 			grh.region.size.y = buffer.get_16()
 	
 		grh_data[grh_id] = grh   
+	pass
 	
 func heading_to_vector(heading:int) -> Vector2:
 	match heading:

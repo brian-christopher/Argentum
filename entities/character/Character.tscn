@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://entities/character/Character.gd" type="Script" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
+[ext_resource path="res://entities/character/GrhAnimation.gd" type="Script" id=3]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 16.0
@@ -36,15 +37,23 @@ clip_text = true
 
 [node name="Body" type="Sprite" parent="Outfit"]
 region_enabled = true
+script = ExtResource( 3 )
 
 [node name="Head" type="Sprite" parent="Outfit"]
 region_enabled = true
+script = ExtResource( 3 )
 
 [node name="Helmet" type="Sprite" parent="Outfit"]
 region_enabled = true
+script = ExtResource( 3 )
 
 [node name="Weapon" type="Sprite" parent="Outfit"]
 region_enabled = true
+region_rect = Rect2( 766, 69, 3, 0 )
+script = ExtResource( 3 )
 
 [node name="Shield" type="Sprite" parent="Outfit"]
 region_enabled = true
+script = ExtResource( 3 )
+
+[node name="Effects" type="Node2D" parent="."]

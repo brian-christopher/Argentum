@@ -48,6 +48,12 @@ func _on_parse_data(packet_id:int, data):
 		
 		GameProtocol.ServerPacketID.ChangeMap:
 			_change_map(data)
+			
+		GameProtocol.ServerPacketID.UpdateHP:
+			_player_stats.hp = data
+			
+		GameProtocol.ServerPacketID.UpdateSta:
+			_player_stats.sta = data
 		
 		GameProtocol.ServerPacketID.UpdateUserStats:
 			_parse_update_player_stats(data)
@@ -67,6 +73,7 @@ func _on_parse_data(packet_id:int, data):
 			_parse_character_move(data)
 		GameProtocol.ServerPacketID.ObjectDelete:
 			_parse_object_delete(data)
+
 
 
 		
@@ -165,6 +172,8 @@ func _parse_character_move(data:Dictionary) -> void:
 func _parse_object_delete(data:Dictionary) -> void:
 	if _map_container.current_map:
 		_map_container.current_map.remove_item(data.x - 1, data.y - 1)
+		
+ 
 	
 func _process(delta: float) -> void:
 	_follow_character(delta)
