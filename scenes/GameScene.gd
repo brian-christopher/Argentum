@@ -73,13 +73,31 @@ func _on_parse_data(packet_id:int, data):
 			_parse_character_move(data)
 		GameProtocol.ServerPacketID.ObjectDelete:
 			_parse_object_delete(data)
-
-
-
-		
+		GameProtocol.ServerPacketID.CharacterChange:
+			_parse_character_change(data)
+		GameProtocol.ServerPacketID.BlockPosition:
+			_parse_block_position(data)
+		GameProtocol.ServerPacketID.PlayMidi:
+			_parse_play_midi(data)
+		GameProtocol.ServerPacketID.PlayWave:
+			_parse_play_wave(data)
+	
+ 
 		_:
 			print(_server_packet_names[packet_id])
-		
+			
+func _parse_play_wave(data:Dictionary) -> void:
+	AudioManager.play_sfx2d_from_id(data.wave, data.x, data.y)
+
+func _parse_play_midi(data:Dictionary) -> void:
+	AudioManager.play_music_from_id(data.midi, data.loops)
+
+func _parse_block_position(data:Dictionary) -> void:
+	var x = data.x - 1
+	var y = data.y - 1
+	
+	if _map_container.current_map:
+		_map_container.current_map.set_tile_block(x, y, data.value)
 		 
 func _parse_update_player_stats(stats:Dictionary) -> void:
 	_player_stats.hp = stats.max_hp
@@ -114,7 +132,20 @@ func _parse_create_character(data:Dictionary) -> void:
 	character.helmet = data.helmet
 	character.privs = data.privs
 	character.criminal = data.criminal
-	
+
+
+func _parse_character_change(data:Dictionary) -> void:
+	if _map_container.current_map:
+		var character = _map_container.current_map.find_character(data.char_id) as Character
+		if character:
+			character.heading = data.heading
+			character.body = data.body
+			character.head = data.head
+			character.weapon = data.weapon
+			character.shield = data.shield
+			character.helmet = data.helmet 
+			
+
 	
 func _change_map(data:Dictionary) -> void:
 	_map_container.set_main_character_id(_main_character_id)

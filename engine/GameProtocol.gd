@@ -492,8 +492,8 @@ func _handle_change_map(buffer:StreamPeerBuffer) -> Dictionary:
 func _handle_play_midi(buffer:StreamPeerBuffer) -> Dictionary:
 	var data = {}
 
-	data.current_midi = buffer.get_u8()
-	data.midi_id = buffer.get_16()
+	data.midi = buffer.get_u8()
+	data.loops = buffer.get_16()
 	 
 	return data
 	
@@ -602,8 +602,8 @@ func _handle_play_wave(buffer:StreamPeerBuffer) -> Dictionary:
 	var data = {}
 
 	data.wave = buffer.get_u8()
-	data.srcX = buffer.get_u8()
-	data.srcY = buffer.get_u8()
+	data.x = buffer.get_u8()
+	data.y = buffer.get_u8()
 	
 	return data 
 	

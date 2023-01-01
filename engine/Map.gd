@@ -147,6 +147,13 @@ func find_character(char_id:int) -> Character:
 func set_tile_trigger(x:int, y:int, trigger:int) -> void:
 	_triggers[x + y * Global.MAP_WIDTH] = trigger
 	
+func set_tile_block(x:int, y:int, enable:bool) -> void:
+	var bits = _flags[x + y * Global.MAP_HEIGHT]
+	if enable:
+		_flags[x + y * Global.MAP_HEIGHT] = bits | TileFlags.Blocked
+	else:
+		_flags[x + y * Global.MAP_HEIGHT] = bits ^ TileFlags.Blocked
+	   
 func can_walk(x:int, y:int) -> bool:
 #Limites del mapa
 #    If x < MinXBorder Or x > MaxXBorder Or y < MinYBorder Or y > MaxYBorder Then

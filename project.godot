@@ -52,6 +52,7 @@ config/icon="res://icon.png"
 
 Global="*res://engine/Global.gd"
 Connection="*res://engine/Connection.gd"
+AudioManager="*res://engine/AudioManager.gd"
 
 [display]
 
