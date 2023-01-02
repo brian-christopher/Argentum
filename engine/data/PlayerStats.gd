@@ -13,6 +13,8 @@ signal change_level(value)
 signal change_elu(value)
 signal change_elv(value)
 
+signal change_spell_slot(slot, name)
+
 var hp:int setget set_hp
 var max_hp:int setget set_max_hp
 
@@ -33,6 +35,16 @@ var gold:int setget set_gold
 var level:int setget set_level
 var elu:int setget set_elu
 var elv:int setget set_elv
+
+var spells:Array
+
+func _init() -> void:
+	spells.resize(Global.MAXHECHI)
+	spells.fill("(Nada)")
+
+func set_spell_slot(slot:int, text:String) -> void:
+	spells[slot - 1] = text
+	emit_signal("change_spell_slot", slot, text)
 
 func set_hp(value:int) -> void:
 	hp	= value

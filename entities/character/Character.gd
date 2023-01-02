@@ -139,3 +139,6 @@ func talk(message:String, color:Color = Color.white) -> void:
 
 func _on_RemoveDialog_timeout() -> void:
 	$Dialog.text = ""
+
+func add_effect(effect):
+	$Effects.add_child(effect)

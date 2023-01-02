@@ -418,6 +418,9 @@ func _init_handlers():
 	_handlers[ServerPacketID.ObjectDelete] = "_handle_object_delete"
 	_handlers[ServerPacketID.UpdateHP] = "_handle_update_hp"
 	_handlers[ServerPacketID.NPCHitUser] = "_handle_npc_hit_user"
+	_handlers[ServerPacketID.UserHitNPC] = "_handle_user_hit_npc"
+	_handlers[ServerPacketID.UserSwing] = "_handle_user_swing"
+	_handlers[ServerPacketID.NPCSwing] = "_handle_npc_swing"
 
 func handle_incoming_data(bytes):
 	var buffer = ByteQueue.new()
@@ -433,10 +436,17 @@ func handle_incoming_data(bytes):
 			print("paquete con un id invalido: %d" % packet_id )
 			Connection.disconnect_from_server()
 			break
-	
-
-
+	 
 ############################################### INICIO DE HANDLERS ##########################################################################
+func _handle_user_swing(_buffer):
+	return
+	
+func _handle_npc_swing(_buffer):
+	return
+
+func _handle_user_hit_npc(buffer:StreamPeerBuffer) -> int:
+	return buffer.get_32()
+
 func _handle_error_msg(buffer:StreamPeerBuffer): 
 	emit_signal("error_message", buffer.get_utf8_string())
 	
@@ -750,6 +760,15 @@ func write_walk(heading:int) -> void:
 func write_change_heading(heading:int) -> void:
 	auxiliarBuffer.put_u8(ClientPacketID.ChangeHeading)
 	auxiliarBuffer.put_u8(heading)
+	
+func write_attack():
+	auxiliarBuffer.put_u8(ClientPacketID.Attack)
+	
+func write_combat_mode_toggle():
+	auxiliarBuffer.put_u8(ClientPacketID.CombatModeToggle)
+	
+func write_pick_up():
+	auxiliarBuffer.put_u8(ClientPacketID.PickUp)
 
 ############################################### FIN DE WRITERS ##########################################################################
  

@@ -118,6 +118,7 @@ enum PlayerType {
 }
 
 enum eObjType{
+	None = 0
 	otUseOnce = 1
 	otWeapon = 2
 	otArmadura = 3
@@ -238,4 +239,6 @@ func heading_to_vector(heading:int) -> Vector2:
 	print("heading con una valor invalido")
 	return Vector2.ZERO
 
+func load_texture_from_id(id:int)-> Texture:
+	return load("res://assets/graphics/%d.png" % id) as Texture
  

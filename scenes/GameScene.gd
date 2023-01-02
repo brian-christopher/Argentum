@@ -6,7 +6,8 @@ onready var _main_camera = find_node("MainCamera")
 onready var _map_container = find_node("MapContainer")
  
 var _protocol:GameProtocol
-var _player_stats:PlayerStats 
+var _player_stats:PlayerStats
+var _player_inventory:Inventory
   
 var _main_character_id := 0
 
@@ -22,14 +23,31 @@ onready var _server_packet_names:Array = GameProtocol.ServerPacketID.keys()
 func initiaze(protocol:GameProtocol):
 	_protocol = protocol
 	_player_stats = PlayerStats.new()
+	_player_inventory = Inventory.new(Global.MAX_INVENTORY_SLOTS)
 	
 	protocol.connect("parse_data", self, "_on_parse_data")
-	Connection.connect("disconnected", self, "_on_disconnected")
+	Connection.connect("disconnected", self, "_on_disconnected") 
 	
- 
+	
+	if !is_inside_tree():
+		yield(self, "ready")
+		
+	find_node("InventoryContainer").set_inventory(_player_inventory)
+	 
+
+func _update_spell_list(slot:int, name:String):
+	return
+	var d = null
+	
+	if d.items.size() == 0:
+		for i in range(Global.MAXHECHI):
+			d.add_item("(Nada)")
+			 
+		d.set_item_text(slot - 1, name)
+		 
 func _ready():
-	pass # Replace with function body.
-	
+	#_player_stats.connect("change_spell_slot", self, "_update_spell_list")
+	pass
 func _on_disconnected():
 	var scene = load("res://scenes/LobbyScene.tscn").instance()
 	scene._protocol = _protocol
@@ -48,6 +66,11 @@ func _on_parse_data(packet_id:int, data):
 			
 		GameProtocol.ServerPacketID.Disconnect:
 			_on_disconnected()
+			
+		GameProtocol.ServerPacketID.ChangeSpellSlot:
+			_parse_change_spell_slot(data)
+		GameProtocol.ServerPacketID.ChangeInventorySlot:
+			_parse_change_inventory_slot(data)
 		
 		GameProtocol.ServerPacketID.ChangeMap:
 			_change_map(data)
@@ -87,10 +110,39 @@ func _on_parse_data(packet_id:int, data):
 		GameProtocol.ServerPacketID.ChatOverHead:
 			_parse_chat_over_head(data)
 		GameProtocol.ServerPacketID.RemoveCharDialog:
-			_parse_remove_char_dialog(data)	
+			_parse_remove_char_dialog(data)
+#		GameProtocol.ServerPacketID.CreateFX:
+#			_parse_create_fx(data)
  
 		_:
 			print(_server_packet_names[packet_id])
+			
+func _parse_change_inventory_slot(data:Dictionary) -> void:
+	var item = Item.new()
+	item.name = data.name
+	item.min_hit = data.min_hit
+	item.max_hit = data.max_hit
+	item.defense = data.defense
+	item.value   = data.value
+	item.type    = data.obj_type
+	
+	if data.grh_index:
+		var texture_id = Global.grh_data[data.grh_index].file_num
+		item.texture = Global.load_texture_from_id(texture_id) 
+
+	_player_inventory.set_item_stack(data.slot - 1, item, data.amount, data.equipped)
+			
+func _parse_create_fx(data:Dictionary) -> void:
+	if !_map_container.current_map: return
+	
+	var character = _map_container.current_map.find_character(data.char_id)
+	if character:
+		var effect = load("res://entities/effects/FxEffect.tscn").instance()
+		effect.initialize(data.fx, data.fx_loop)
+		character.add_effect(effect)
+			
+func _parse_change_spell_slot(data:Dictionary) -> void:
+	_player_stats.set_spell_slot(data.slot, data.spell_name)
 			
 func _parse_chat_over_head(data:Dictionary) -> void:
 	if !_map_container.current_map: return
@@ -104,7 +156,7 @@ func _parse_remove_char_dialog(char_id:int) -> void:
 	
 	var character = _map_container.current_map.find_character(char_id)
 	if character:
-		character.talk("") 
+		character.talk("")
 	
 func _parse_play_wave(data:Dictionary) -> void:
 	AudioManager.play_sfx2d_from_id(data.wave, data.x, data.y)
@@ -163,7 +215,7 @@ func _parse_character_change(data:Dictionary) -> void:
 			character.head = data.head
 			character.weapon = data.weapon
 			character.shield = data.shield
-			character.helmet = data.helmet 
+			character.helmet = data.helmet
 			
 
 	
@@ -173,10 +225,10 @@ func _change_map(data:Dictionary) -> void:
 
 func _parse_character_remove(char_id:int) -> void:
 	if _map_container.current_map:
-		_map_container.current_map.remove_character_by_id(char_id) 
+		_map_container.current_map.remove_character_by_id(char_id)
 	
 func _parse_user_char_index_in_server(char_id:int) -> void:
-	_main_character_id = char_id 
+	_main_character_id = char_id
 	_map_container.set_main_character_id(_main_character_id)
 		
 func _parse_object_create(data:Dictionary) -> void:
@@ -244,6 +296,13 @@ func _process(delta: float) -> void:
 						main_character.move_to_heading(input_map[i])
 						_protocol.write_walk(input_map[i])
 						break
+						
+		if Input.is_action_just_pressed("attack"):
+			_protocol.write_attack()
+		if Input.is_action_just_pressed("toggle_combat_mode"):
+			_protocol.write_combat_mode_toggle()
+		if Input.is_action_just_pressed("pickup"):
+			_protocol.write_pick_up()
 						 
 	_protocol.flush_data()
 	

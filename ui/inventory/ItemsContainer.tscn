@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://ui/inventory/ItemsContainer.gd" type="Script" id=2]
+
+[sub_resource type="StyleBoxEmpty" id=1]
+
+[node name="PanelContainer" type="PanelContainer"]
+margin_right = 93.0
+margin_bottom = 62.0
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 2 )
+
+[node name="ItemGrid" type="GridContainer" parent="."]
+margin_right = 93.0
+margin_bottom = 62.0
+columns = 5

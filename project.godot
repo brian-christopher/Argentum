@@ -24,6 +24,26 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://engine/GameProtocol.gd"
 }, {
+"base": "Resource",
+"class": "Inventory",
+"language": "GDScript",
+"path": "res://engine/data/Inventory.gd"
+}, {
+"base": "Resource",
+"class": "Item",
+"language": "GDScript",
+"path": "res://engine/data/Item.gd"
+}, {
+"base": "PanelContainer",
+"class": "ItemSlot",
+"language": "GDScript",
+"path": "res://ui/inventory/ItemSlot.gd"
+}, {
+"base": "Resource",
+"class": "ItemStack",
+"language": "GDScript",
+"path": "res://ui/inventory/ItemStack.gd"
+}, {
 "base": "Node2D",
 "class": "Map",
 "language": "GDScript",
@@ -38,6 +58,10 @@ _global_script_class_icons={
 "ByteQueue": "",
 "Character": "",
 "GameProtocol": "",
+"Inventory": "",
+"Item": "",
+"ItemSlot": "",
+"ItemStack": "",
 "Map": "",
 "PlayerStats": ""
 }
@@ -89,6 +113,28 @@ texture={
 "svg/scale": 1.0
 }
 
+[input]
+
+attack={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777238,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+toggle_safe_mode={
+"deadzone": 0.5,
+"events": [  ]
+}
+toggle_combat_mode={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":67,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+pickup={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":65,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+
 [physics]
 
 common/enable_pause_aware_picking=true
@@ -96,6 +142,7 @@ common/enable_pause_aware_picking=true
 [rendering]
 
 quality/driver/driver_name="GLES2"
+2d/snapping/use_gpu_pixel_snap=true
 vram_compression/import_etc=true
 vram_compression/import_etc2=false
 environment/default_environment="res://default_env.tres"

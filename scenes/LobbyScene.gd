@@ -6,8 +6,11 @@ export(PackedScene) var game_scene
 enum State{
 	None,
 	Login,
-	Create
+	Create	
 }
+ 
+const IP_SERVER = "127.0.0.1"
+const IP_PORT = 443
 
 onready var user_name:LineEdit = find_node("UserName")
 onready var user_password:LineEdit = find_node("UserPassword")
@@ -29,13 +32,13 @@ func _on_BtnConnect_pressed():
 	if(current_state != State.None): return
 	
 	current_state = State.Login
-	Connection.connect_to_server("127.0.0.1", 443)
+	Connection.connect_to_server(IP_SERVER, IP_PORT)
 
 func _on_BtnCreate_pressed():
 	if(current_state != State.None): return
 	
 	current_state = State.Create
-	Connection.connect_to_server("127.0.0.1", 443)
+	Connection.connect_to_server(IP_SERVER, IP_PORT)
 
 func _on_client_connected():
 	if(current_state == State.Create):

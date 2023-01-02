@@ -7,23 +7,25 @@ var _frames = []
 
 var _current_frame = 0
 
-func _initialize(fx_id:int, loops:int) -> void:
-	if fx_id <= 0 or fx_id > Global.grh_data.size():
+func initialize(fx_id:int, loops:int) -> void:
+	if fx_id <= 0 or fx_id > Global.fxs_data.size():
 		queue_free()
 		return
- 
-	_frames = Global.fxs_data[fx_id]
-	_offset_y = Global.fxs_data[fx_id].offsetY 
+	 
+	var data = Global.fxs_data[fx_id]
+	_offset_y = data.offsetY
 	_loops = loops
-	
-	if _frames.size() == 0:
-		queue_free()
-		return
-	
-	var grh_id = _frames[0]
-	var region = Global.grh_data[grh_id]
+
+	for i in Global.grh_data[data.id].frames:
+		if i != 0:
+			_frames.append(i)
+	 
+	var grh_id = _frames[0]  
+	var region = Global.grh_data[grh_id].region
 
 	$Sprite.position.y = _offset_y - (region.size.y / 2)
+	$Sprite.region_rect = region
+	$Sprite.texture = load("res://assets/graphics/%d.png" % Global.grh_data[grh_id].file_num)
 
 func _process(delta: float) -> void:
 	pass
