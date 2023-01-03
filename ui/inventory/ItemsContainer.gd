@@ -1,4 +1,4 @@
-extends PanelContainer
+extends MarginContainer 
 
 const ITEM_SLOT_SCENE = preload("res://ui/inventory/ItemSlot.tscn")
 
@@ -18,7 +18,7 @@ func set_inventory(inventory:Inventory) -> void:
 		itemGrid.add_child(slot)
 		
 		slot.set_item(i, stack.item, stack.quantity, stack.equipped)
-		slot.connect("item_selected", self, "_on_item_slot_selected", [slot])
+		#slot.connect("item_selected", self, "_on_item_slot_selected", [slot])
 
 func _on_item_slot_selected(slot:ItemSlot):
 	print(slot.inventory_index)

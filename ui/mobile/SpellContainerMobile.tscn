@@ -1,0 +1,95 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://ui/mobile/SpellContainerMobile.gd" type="Script" id=2]
+
+[node name="SpellContainerMobile" type="HBoxContainer"]
+margin_left = 300.0
+margin_right = 1024.0
+margin_bottom = 180.0
+size_flags_horizontal = 3
+custom_constants/separation = 0
+script = ExtResource( 2 )
+
+[node name="Spells" type="VBoxContainer" parent="."]
+margin_right = 544.0
+margin_bottom = 180.0
+size_flags_horizontal = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Spells"]
+margin_right = 544.0
+margin_bottom = 180.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+scroll_deadzone = 2
+
+[node name="GridContainer" type="GridContainer" parent="Spells/ScrollContainer"]
+margin_right = 544.0
+margin_bottom = 180.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/vseparation = 0
+custom_constants/hseparation = 0
+columns = 5
+
+[node name="Buttons" type="VBoxContainer" parent="."]
+margin_left = 544.0
+margin_right = 724.0
+margin_bottom = 180.0
+rect_min_size = Vector2( 180, 0 )
+custom_constants/separation = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Buttons"]
+margin_right = 180.0
+margin_bottom = 90.0
+size_flags_vertical = 3
+custom_constants/separation = 0
+
+[node name="BtnPickup" type="Button" parent="Buttons/HBoxContainer"]
+margin_right = 90.0
+margin_bottom = 90.0
+focus_mode = 0
+size_flags_horizontal = 3
+enabled_focus_mode = 0
+text = "A"
+
+[node name="BtnAttack" type="Button" parent="Buttons/HBoxContainer"]
+margin_left = 90.0
+margin_right = 180.0
+margin_bottom = 90.0
+focus_mode = 0
+size_flags_horizontal = 3
+enabled_focus_mode = 0
+text = "Ctrl"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Buttons"]
+margin_top = 90.0
+margin_right = 180.0
+margin_bottom = 180.0
+size_flags_vertical = 3
+custom_constants/separation = 0
+
+[node name="BtnSpell" type="Button" parent="Buttons/HBoxContainer2"]
+margin_right = 60.0
+margin_bottom = 90.0
+focus_mode = 0
+size_flags_horizontal = 3
+enabled_focus_mode = 0
+text = "H"
+
+[node name="BtnUsar" type="Button" parent="Buttons/HBoxContainer2"]
+margin_left = 60.0
+margin_right = 120.0
+margin_bottom = 90.0
+focus_mode = 0
+size_flags_horizontal = 3
+enabled_focus_mode = 0
+text = "U"
+
+[node name="BtnLag" type="Button" parent="Buttons/HBoxContainer2"]
+margin_left = 120.0
+margin_right = 180.0
+margin_bottom = 90.0
+focus_mode = 0
+size_flags_horizontal = 3
+enabled_focus_mode = 0
+text = "L"

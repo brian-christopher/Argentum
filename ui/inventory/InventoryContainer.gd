@@ -1,8 +1,8 @@
-extends PanelContainer 
+extends ScrollContainer
 
-var inventory:Inventory = null
-onready var panelContainer = find_node("PanelContainer")
+var inventory:Inventory
+onready var itemsContainer = find_node("ItemsContainer")
 
 func set_inventory(inventory:Inventory) -> void:
 	self.inventory = inventory
-	panelContainer.set_inventory(inventory) 
+	itemsContainer.set_inventory(inventory)

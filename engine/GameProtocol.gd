@@ -420,7 +420,7 @@ func _init_handlers():
 	_handlers[ServerPacketID.NPCHitUser] = "_handle_npc_hit_user"
 	_handlers[ServerPacketID.UserHitNPC] = "_handle_user_hit_npc"
 	_handlers[ServerPacketID.UserSwing] = "_handle_user_swing"
-	_handlers[ServerPacketID.NPCSwing] = "_handle_npc_swing"
+	_handlers[ServerPacketID.NPCSwing] = "_handle_npc_swing" 
 
 func handle_incoming_data(bytes):
 	var buffer = ByteQueue.new()
@@ -769,6 +769,11 @@ func write_combat_mode_toggle():
 	
 func write_pick_up():
 	auxiliarBuffer.put_u8(ClientPacketID.PickUp)
+	
+func write_move_sell(upwards:bool, slot:int):
+	auxiliarBuffer.put_u8(ClientPacketID.MoveSpell)
+	auxiliarBuffer.put_u8(upwards)
+	auxiliarBuffer.put_u8(slot)
 
 ############################################### FIN DE WRITERS ##########################################################################
  

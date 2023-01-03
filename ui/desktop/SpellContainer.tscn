@@ -1,0 +1,76 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://assets/inventory/33.png" type="Texture" id=1]
+[ext_resource path="res://ui/desktop/SpellContainer.gd" type="Script" id=2]
+[ext_resource path="res://assets/theme.theme" type="Theme" id=3]
+
+[sub_resource type="StyleBoxEmpty" id=1]
+
+[node name="SpellContainer" type="PanelContainer"]
+margin_right = 367.0
+margin_bottom = 313.0
+rect_min_size = Vector2( 367, 313 )
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 2 )
+
+[node name="BackgroundTexture" type="TextureRect" parent="."]
+margin_right = 367.0
+margin_bottom = 313.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 7
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_right = 367.0
+margin_bottom = 313.0
+
+[node name="Spells" type="ItemList" parent="VBoxContainer"]
+margin_right = 367.0
+margin_bottom = 229.0
+focus_mode = 0
+size_flags_vertical = 3
+theme = ExtResource( 3 )
+
+[node name="Buttons" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 233.0
+margin_right = 367.0
+margin_bottom = 313.0
+size_flags_horizontal = 3
+theme = ExtResource( 3 )
+
+[node name="BtnCast" type="Button" parent="VBoxContainer/Buttons"]
+margin_right = 313.0
+margin_bottom = 80.0
+focus_mode = 0
+size_flags_horizontal = 3
+theme = ExtResource( 3 )
+enabled_focus_mode = 0
+text = "Lanzar"
+
+[node name="Container" type="VBoxContainer" parent="VBoxContainer/Buttons"]
+margin_left = 317.0
+margin_right = 367.0
+margin_bottom = 80.0
+
+[node name="BtnMoveUp" type="Button" parent="VBoxContainer/Buttons/Container"]
+margin_right = 50.0
+margin_bottom = 38.4
+rect_min_size = Vector2( 50, 0 )
+focus_mode = 0
+enabled_focus_mode = 0
+text = "↑"
+
+[node name="BtnMoveDown" type="Button" parent="VBoxContainer/Buttons/Container"]
+margin_top = 42.0
+margin_right = 50.0
+margin_bottom = 80.4
+rect_min_size = Vector2( 50, 0 )
+focus_mode = 0
+enabled_focus_mode = 0
+text = "↓"
+
+[connection signal="item_selected" from="VBoxContainer/Spells" to="." method="_on_Spells_item_selected"]
+[connection signal="pressed" from="VBoxContainer/Buttons/Container/BtnMoveUp" to="." method="_on_BtnMoveUp_pressed"]
+[connection signal="pressed" from="VBoxContainer/Buttons/Container/BtnMoveDown" to="." method="_on_BtnMoveDown_pressed"]

@@ -4,6 +4,9 @@ export(PackedScene) var character_scene
 
 onready var _main_camera = find_node("MainCamera")
 onready var _map_container = find_node("MapContainer")
+onready var _main_panel = find_node("MobileMainPanel")
+
+onready var _fpsLabel = find_node("FPSLabel")
  
 var _protocol:GameProtocol
 var _player_stats:PlayerStats
@@ -26,28 +29,18 @@ func initiaze(protocol:GameProtocol):
 	_player_inventory = Inventory.new(Global.MAX_INVENTORY_SLOTS)
 	
 	protocol.connect("parse_data", self, "_on_parse_data")
-	Connection.connect("disconnected", self, "_on_disconnected") 
-	
-	
-	if !is_inside_tree():
-		yield(self, "ready")
-		
-	find_node("InventoryContainer").set_inventory(_player_inventory)
+	Connection.connect("disconnected", self, "_on_disconnected")  
 	 
-
-func _update_spell_list(slot:int, name:String):
-	return
-	var d = null
-	
-	if d.items.size() == 0:
-		for i in range(Global.MAXHECHI):
-			d.add_item("(Nada)")
-			 
-		d.set_item_text(slot - 1, name)
 		 
 func _ready():
-	#_player_stats.connect("change_spell_slot", self, "_update_spell_list")
-	pass
+	if _main_panel:
+		_main_panel.initialize(_player_stats, _player_inventory, _protocol) 
+		
+#	var world_viewport = get_node("GUI/WolrdContainer/World")
+#	if world_viewport:
+#		world_viewport.size = Vector2(544, 416)
+
+
 func _on_disconnected():
 	var scene = load("res://scenes/LobbyScene.tscn").instance()
 	scene._protocol = _protocol
@@ -111,11 +104,19 @@ func _on_parse_data(packet_id:int, data):
 			_parse_chat_over_head(data)
 		GameProtocol.ServerPacketID.RemoveCharDialog:
 			_parse_remove_char_dialog(data)
+		GameProtocol.ServerPacketID.UpdateHungerAndThirst:
+			_parse_update_hunger_anb_thirst(data)
 #		GameProtocol.ServerPacketID.CreateFX:
 #			_parse_create_fx(data)
  
 		_:
 			print(_server_packet_names[packet_id])
+
+func _parse_update_hunger_anb_thirst(data:Dictionary) -> void:
+	_player_stats.max_sed = data.max_agua
+	_player_stats.sed = data.min_agua
+	_player_stats.ham = data.min_ham 
+	_player_stats.max_ham = data.max_ham 
 			
 func _parse_change_inventory_slot(data:Dictionary) -> void:
 	var item = Item.new()
@@ -142,7 +143,7 @@ func _parse_create_fx(data:Dictionary) -> void:
 		character.add_effect(effect)
 			
 func _parse_change_spell_slot(data:Dictionary) -> void:
-	_player_stats.set_spell_slot(data.slot, data.spell_name)
+	_player_stats.set_spell(data.slot - 1, data.spell_name)
 			
 func _parse_chat_over_head(data:Dictionary) -> void:
 	if !_map_container.current_map: return
@@ -172,14 +173,14 @@ func _parse_block_position(data:Dictionary) -> void:
 		_map_container.current_map.set_tile_block(x, y, data.value)
 		 
 func _parse_update_player_stats(stats:Dictionary) -> void:
-	_player_stats.hp = stats.max_hp
-	_player_stats.max_hp = stats.min_hp
+	_player_stats.hp = stats.min_hp
+	_player_stats.max_hp = stats.max_hp
 	
-	_player_stats.mp = stats.max_mp
-	_player_stats.max_mp = stats.min_mp
+	_player_stats.mp = stats.min_mp
+	_player_stats.max_mp = stats.max_hp
 
-	_player_stats.sta = stats.max_sta
-	_player_stats.max_sta = stats.min_sta
+	_player_stats.sta = stats.min_sta
+	_player_stats.max_sta = stats.max_sta
 	
 	_player_stats.gold = stats.gold
 	_player_stats.level = stats.lvl
@@ -276,9 +277,13 @@ func _parse_object_delete(data:Dictionary) -> void:
 	if _map_container.current_map:
 		_map_container.current_map.remove_item(data.x - 1, data.y - 1)
 		
- 
+func _update_info() -> void:
+	_fpsLabel.text = "FPS: %d" % Engine.get_frames_per_second() 
+
 	
 func _process(delta: float) -> void:
+	_update_info()
+	
 	_follow_character(delta)
 
 	if _map_container.current_map:

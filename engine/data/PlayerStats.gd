@@ -42,8 +42,8 @@ func _init() -> void:
 	spells.resize(Global.MAXHECHI)
 	spells.fill("(Nada)")
 
-func set_spell_slot(slot:int, text:String) -> void:
-	spells[slot - 1] = text
+func set_spell(slot:int, text:String) -> void:
+	spells[slot] = text
 	emit_signal("change_spell_slot", slot, text)
 
 func set_hp(value:int) -> void:
@@ -100,4 +100,4 @@ func set_elu(value:int) -> void:
 	
 func set_elv(value:int) -> void:
 	elv	= value
-	emit_signal("change_elv", elv)
+	emit_signal("change_elv", elv) 
