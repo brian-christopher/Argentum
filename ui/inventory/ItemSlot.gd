@@ -12,8 +12,7 @@ export (int, -1, 1000, 1) var inventory_index:int = -1
 var item:Item = null setget _set_item
 var quantity:int = 0 setget _set_quantity
 var equipped:bool = false setget _set_equipped
-
-var inventory_slot:int = -1
+ 
 
 func set_item(index:int, item:Item, quantity:int, equipped:bool) -> void:
 	self.inventory_index = index
@@ -57,4 +56,10 @@ func _set_equipped(new_equipped:bool) -> void:
 	if equipped:
 		equippedLabel.visible = true
 	else:
-		equippedLabel.visible = false
+		equippedLabel.visible = false 
+
+func _gui_input(event: InputEvent) -> void:
+	if event is InputEventScreenTouch:
+		if event.pressed:
+			emit_signal("item_selected")
+ 

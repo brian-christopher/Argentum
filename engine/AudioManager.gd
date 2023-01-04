@@ -24,6 +24,8 @@ func play_sfx2d_from_id(id:int, x:int, y:int) -> void:
 	 
 func play_music_from_id(id:int, loops:int = -1) -> void:
 	var audio_resource = load("res://assets/music/%d.mp3" % id)  
+	if !audio_resource:
+		return
 
 	_music_stream.stream = audio_resource
 	_music_stream.play() 

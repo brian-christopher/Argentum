@@ -1,0 +1,25 @@
+[gd_resource type="SpriteFrames" load_steps=16 format=2]
+
+[ext_resource path="res://assets/graphics/100.png" type="Texture" id=1]
+[ext_resource path="res://assets/graphics/101.png" type="Texture" id=2]
+[ext_resource path="res://assets/graphics/102.png" type="Texture" id=3]
+[ext_resource path="res://assets/graphics/103.png" type="Texture" id=4]
+[ext_resource path="res://assets/graphics/104.png" type="Texture" id=5]
+[ext_resource path="res://assets/graphics/105.png" type="Texture" id=6]
+[ext_resource path="res://assets/graphics/108.png" type="Texture" id=7]
+[ext_resource path="res://assets/graphics/110.png" type="Texture" id=8]
+[ext_resource path="res://assets/graphics/113.png" type="Texture" id=9]
+[ext_resource path="res://assets/graphics/106.png" type="Texture" id=10]
+[ext_resource path="res://assets/graphics/111.png" type="Texture" id=11]
+[ext_resource path="res://assets/graphics/109.png" type="Texture" id=12]
+[ext_resource path="res://assets/graphics/112.png" type="Texture" id=13]
+[ext_resource path="res://assets/graphics/107.png" type="Texture" id=14]
+[ext_resource path="res://assets/graphics/114.png" type="Texture" id=15]
+
+[resource]
+animations = [ {
+"frames": [ ExtResource( 1 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 10 ), ExtResource( 14 ), ExtResource( 7 ), ExtResource( 12 ), ExtResource( 8 ), ExtResource( 11 ), ExtResource( 13 ), ExtResource( 9 ), ExtResource( 15 ) ],
+"loop": false,
+"name": "default",
+"speed": 18.0
+} ]

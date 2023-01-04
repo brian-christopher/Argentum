@@ -174,11 +174,11 @@ func load_json_from_file(filename:String):
 	 
 func _load_ao_resources():
 	bodies_data  = load_json_from_file("res://assets/data/bodies_data.json")
-	helmets_data = load_json_from_file("res://assets/data/helmets_data.json")
+ 	helmets_data = load_json_from_file("res://assets/data/helmets_data.json")
 	heads_data   = load_json_from_file("res://assets/data/heads_data.json")
 	weapons_data = load_json_from_file("res://assets/data/weapons_data.json")
 	shields_data = load_json_from_file("res://assets/data/shields_data.json") 
-	fxs_data 	 = load_json_from_file("res://assets/data/fxs_data.json") 
+	fxs_data 	 = load_json_from_file("res://assets/data/fxs_data.json")
 		
 func _load_grh_data():
 	var file = File.new()
@@ -222,8 +222,7 @@ func _load_grh_data():
 			grh.region.size.x = buffer.get_16()
 			grh.region.size.y = buffer.get_16()
 	
-		grh_data[grh_id] = grh   
-	pass
+		grh_data[grh_id] = grh    
 	
 func heading_to_vector(heading:int) -> Vector2:
 	match heading:

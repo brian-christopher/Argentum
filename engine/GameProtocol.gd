@@ -421,6 +421,7 @@ func _init_handlers():
 	_handlers[ServerPacketID.UserHitNPC] = "_handle_user_hit_npc"
 	_handlers[ServerPacketID.UserSwing] = "_handle_user_swing"
 	_handlers[ServerPacketID.NPCSwing] = "_handle_npc_swing" 
+	_handlers[ServerPacketID.UpdateGold] = "_handle_update_gold" 
 
 func handle_incoming_data(bytes):
 	var buffer = ByteQueue.new()
@@ -438,6 +439,9 @@ func handle_incoming_data(bytes):
 			break
 	 
 ############################################### INICIO DE HANDLERS ##########################################################################
+func _handle_update_gold(data:StreamPeer) -> int:
+	return data.get_32()
+
 func _handle_user_swing(_buffer):
 	return
 	
@@ -774,7 +778,11 @@ func write_move_sell(upwards:bool, slot:int):
 	auxiliarBuffer.put_u8(ClientPacketID.MoveSpell)
 	auxiliarBuffer.put_u8(upwards)
 	auxiliarBuffer.put_u8(slot)
-
+	
+func write_use_item(slot:int):
+	auxiliarBuffer.put_u8(ClientPacketID.UseItem)
+	auxiliarBuffer.put_u8(slot)
+	
 ############################################### FIN DE WRITERS ##########################################################################
  
 

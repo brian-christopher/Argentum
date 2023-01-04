@@ -1,0 +1,115 @@
+[gd_resource type="SpriteFrames" load_steps=43 format=2]
+
+[ext_resource path="res://assets/graphics/396.png" type="Texture" id=1]
+[ext_resource path="res://assets/graphics/399.png" type="Texture" id=2]
+[ext_resource path="res://assets/graphics/397.png" type="Texture" id=3]
+[ext_resource path="res://assets/graphics/398.png" type="Texture" id=4]
+[ext_resource path="res://assets/graphics/191.png" type="Texture" id=5]
+[ext_resource path="res://assets/graphics/198.png" type="Texture" id=6]
+[ext_resource path="res://assets/graphics/395.png" type="Texture" id=7]
+[ext_resource path="res://assets/graphics/185.png" type="Texture" id=8]
+[ext_resource path="res://assets/graphics/192.png" type="Texture" id=9]
+[ext_resource path="res://assets/graphics/188.png" type="Texture" id=10]
+[ext_resource path="res://assets/graphics/187.png" type="Texture" id=11]
+[ext_resource path="res://assets/graphics/184.png" type="Texture" id=12]
+[ext_resource path="res://assets/graphics/186.png" type="Texture" id=13]
+[ext_resource path="res://assets/graphics/189.png" type="Texture" id=14]
+[ext_resource path="res://assets/graphics/193.png" type="Texture" id=15]
+[ext_resource path="res://assets/graphics/194.png" type="Texture" id=16]
+[ext_resource path="res://assets/graphics/195.png" type="Texture" id=17]
+[ext_resource path="res://assets/graphics/197.png" type="Texture" id=18]
+[ext_resource path="res://assets/graphics/199.png" type="Texture" id=19]
+[ext_resource path="res://assets/graphics/190.png" type="Texture" id=20]
+[ext_resource path="res://assets/graphics/196.png" type="Texture" id=21]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 12 )
+region = Rect2( 0, 0, 145, 145 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 8 )
+region = Rect2( 0, 0, 145, 145 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 13 )
+region = Rect2( 0, 0, 145, 145 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 11 )
+region = Rect2( 0, 0, 145, 145 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 10 )
+region = Rect2( 0, 0, 145, 145 )
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 14 )
+region = Rect2( 0, 0, 145, 145 )
+
+[sub_resource type="AtlasTexture" id=7]
+atlas = ExtResource( 20 )
+region = Rect2( 0, 0, 145, 145 )
+
+[sub_resource type="AtlasTexture" id=8]
+atlas = ExtResource( 5 )
+region = Rect2( 0, 0, 145, 145 )
+
+[sub_resource type="AtlasTexture" id=9]
+atlas = ExtResource( 9 )
+region = Rect2( 0, 0, 145, 145 )
+
+[sub_resource type="AtlasTexture" id=10]
+atlas = ExtResource( 15 )
+region = Rect2( 0, 0, 145, 145 )
+
+[sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 16 )
+region = Rect2( 0, 0, 145, 145 )
+
+[sub_resource type="AtlasTexture" id=12]
+atlas = ExtResource( 17 )
+region = Rect2( 0, 0, 145, 145 )
+
+[sub_resource type="AtlasTexture" id=13]
+atlas = ExtResource( 21 )
+region = Rect2( 0, 0, 145, 145 )
+
+[sub_resource type="AtlasTexture" id=14]
+atlas = ExtResource( 18 )
+region = Rect2( 0, 0, 145, 145 )
+
+[sub_resource type="AtlasTexture" id=15]
+atlas = ExtResource( 6 )
+region = Rect2( 0, 0, 145, 145 )
+
+[sub_resource type="AtlasTexture" id=16]
+atlas = ExtResource( 19 )
+region = Rect2( 0, 0, 145, 145 )
+
+[sub_resource type="AtlasTexture" id=17]
+atlas = ExtResource( 7 )
+region = Rect2( 0, 0, 145, 145 )
+
+[sub_resource type="AtlasTexture" id=18]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 145, 145 )
+
+[sub_resource type="AtlasTexture" id=19]
+atlas = ExtResource( 3 )
+region = Rect2( 0, 0, 145, 145 )
+
+[sub_resource type="AtlasTexture" id=20]
+atlas = ExtResource( 4 )
+region = Rect2( 0, 0, 145, 145 )
+
+[sub_resource type="AtlasTexture" id=21]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 145, 145 )
+
+[resource]
+animations = [ {
+"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ), SubResource( 13 ), SubResource( 14 ), SubResource( 15 ), SubResource( 16 ), SubResource( 17 ), SubResource( 18 ), SubResource( 19 ), SubResource( 20 ), SubResource( 21 ) ],
+"loop": false,
+"name": "default",
+"speed": 18.0
+} ]

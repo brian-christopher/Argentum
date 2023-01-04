@@ -68,6 +68,9 @@ func _on_parse_data(packet_id:int, data):
 		GameProtocol.ServerPacketID.ChangeMap:
 			_change_map(data)
 			
+		GameProtocol.ServerPacketID.UpdateGold:
+			_parse_update_gold(data)
+			
 		GameProtocol.ServerPacketID.UpdateHP:
 			_player_stats.hp = data
 			
@@ -106,11 +109,13 @@ func _on_parse_data(packet_id:int, data):
 			_parse_remove_char_dialog(data)
 		GameProtocol.ServerPacketID.UpdateHungerAndThirst:
 			_parse_update_hunger_anb_thirst(data)
-#		GameProtocol.ServerPacketID.CreateFX:
-#			_parse_create_fx(data)
+		GameProtocol.ServerPacketID.CreateFX:
+			_parse_create_fx(data)
  
 		_:
 			print(_server_packet_names[packet_id])
+func _parse_update_gold(value:int) -> void:
+	_player_stats.gold = value
 
 func _parse_update_hunger_anb_thirst(data:Dictionary) -> void:
 	_player_stats.max_sed = data.max_agua
@@ -135,12 +140,11 @@ func _parse_change_inventory_slot(data:Dictionary) -> void:
 			
 func _parse_create_fx(data:Dictionary) -> void:
 	if !_map_container.current_map: return
+	var map = _map_container.current_map
 	
-	var character = _map_container.current_map.find_character(data.char_id)
+	var character = map.find_character(data.char_id)
 	if character:
-		var effect = load("res://entities/effects/FxEffect.tscn").instance()
-		effect.initialize(data.fx, data.fx_loop)
-		character.add_effect(effect)
+		character.add_effect(data.fx, data.fx_loop)
 			
 func _parse_change_spell_slot(data:Dictionary) -> void:
 	_player_stats.set_spell(data.slot - 1, data.spell_name)
@@ -278,6 +282,7 @@ func _update_info() -> void:
 	_fpsLabel.text = "FPS: %d" % Engine.get_frames_per_second() 
  
 func _process_movement(_delta:float) -> void:
+	return
 	var velocity = _joystick.get_velocity().round() 
 	
 	if !_map_container.current_map: return

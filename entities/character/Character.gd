@@ -8,6 +8,8 @@ onready var _head_sprite = find_node("Head")
 onready var _helmet_sprite = find_node("Helmet")
 onready var _weapon_sprite = find_node("Weapon")
 onready var _shield_sprite = find_node("Shield")
+
+const FXS_SCENE = preload("res://entities/effects/Fxs.tscn")
  
 #identificador unico que el serve asigna al char
 var guid := 0
@@ -140,5 +142,22 @@ func talk(message:String, color:Color = Color.white) -> void:
 func _on_RemoveDialog_timeout() -> void:
 	$Dialog.text = ""
 
-func add_effect(effect):
-	$Effects.add_child(effect)
+func add_effect(effectId:int, loops:int) -> void:
+	var resource = load("res://resources/fxs/effect_%d.tres" % effectId) as SpriteFrames
+	if !resource:
+		return
+	
+	var texture = resource.get_frame("default", 1)
+	var offset_y = texture.get_height() / 2
+	
+	if resource:
+		var fx = FXS_SCENE.instance()
+		$Effects.add_child(fx)
+		
+		if texture.get_width() != 128:
+			fx.position.y -= offset_y
+		else:
+			fx.position.y -= 16
+			 
+		fx.intialize(resource)	
+	
