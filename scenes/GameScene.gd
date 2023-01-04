@@ -5,6 +5,7 @@ export(PackedScene) var character_scene
 onready var _main_camera = find_node("MainCamera")
 onready var _map_container = find_node("MapContainer")
 onready var _main_panel = find_node("MobileMainPanel")
+onready var _joystick = find_node("VirtualJoystick")
 
 onready var _fpsLabel = find_node("FPSLabel")
  
@@ -44,7 +45,6 @@ func _ready():
 func _on_disconnected():
 	var scene = load("res://scenes/LobbyScene.tscn").instance()
 	scene._protocol = _protocol
-	
 	get_parent().switch_scene(scene)
 	
 func _on_parse_data(packet_id:int, data):
@@ -206,7 +206,6 @@ func _parse_create_character(data:Dictionary) -> void:
 	character.privs = data.privs
 	character.criminal = data.criminal
 
-
 func _parse_character_change(data:Dictionary) -> void:
 	if _map_container.current_map:
 		var character = _map_container.current_map.find_character(data.char_id) as Character
@@ -217,9 +216,7 @@ func _parse_character_change(data:Dictionary) -> void:
 			character.weapon = data.weapon
 			character.shield = data.shield
 			character.helmet = data.helmet
-			
 
-	
 func _change_map(data:Dictionary) -> void:
 	_map_container.set_main_character_id(_main_character_id)
 	_map_container.switch_map(data.map_id)
@@ -279,11 +276,54 @@ func _parse_object_delete(data:Dictionary) -> void:
 		
 func _update_info() -> void:
 	_fpsLabel.text = "FPS: %d" % Engine.get_frames_per_second() 
-
+ 
+func _process_movement(_delta:float) -> void:
+	var velocity = _joystick.get_velocity().round() 
+	
+	if !_map_container.current_map: return
+	if velocity == Vector2.ZERO: return
+	
+	var map = _map_container.current_map
+	var heading = _get_movement_heading(velocity)
+	var main_char = map.find_character(_main_character_id)
+	
+	if main_char and !main_char.is_moving:
+		var offset = Global.heading_to_vector(heading)
+		var new_position_x = main_char.grid_position_x + offset.x
+		var new_position_y = main_char.grid_position_y + offset.y
+		
+		if map.can_walk(new_position_x, new_position_y):
+			main_char.move_to_heading(heading)
+			_protocol.write_walk(heading) 
+		else:
+			if heading != main_char.heading:
+				main_char.heading = heading
+				_protocol.write_change_heading(heading)
+		
+func _get_movement_heading(velocity:Vector2) -> int:
+	match velocity:
+		Vector2.LEFT:
+			return Global.Heading.Left
+		Vector2.UP:
+			return Global.Heading.Up
+		Vector2.DOWN:
+			return Global.Heading.Down
+		Vector2.RIGHT:
+			return Global.Heading.Right	
+		Vector2(1, 1):
+			return Global.Heading.Right
+		Vector2(-1, -1):
+			return Global.Heading.Left
+		Vector2(1, -1):
+			return Global.Heading.Right
+		Vector2(-1, 1):
+			return Global.Heading.Left
+			
+	return 0
 	
 func _process(delta: float) -> void:
 	_update_info()
-	
+	_process_movement(delta)
 	_follow_character(delta)
 
 	if _map_container.current_map:
