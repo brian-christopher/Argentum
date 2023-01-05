@@ -45,7 +45,7 @@ func area_changed(x:int, y:int) -> void:
 	var rem_item = []
 	
 	for character in _characters:
-		if !_visible_area.has_point(Vector2(character.grid_position_x +1  , character.grid_position_y + 1 )):
+		if !_visible_area.has_point(Vector2(character.grid_position_x  , character.grid_position_y )):
 			rem_chars.append(character)
 			 
 		# if character.grid_position_y +1  < _min_limit_y or character.grid_position_y + 1 > _max_limit_y or character.grid_position_x + 1 < _min_limit_x or character.grid_position_x + 1 > _max_limit_x:

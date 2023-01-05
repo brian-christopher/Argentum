@@ -173,12 +173,7 @@ func load_json_from_file(filename:String):
 	return json_result
 	 
 func _load_ao_resources():
-	bodies_data  = load_json_from_file("res://assets/data/bodies_data.json")
- 	helmets_data = load_json_from_file("res://assets/data/helmets_data.json")
-	heads_data   = load_json_from_file("res://assets/data/heads_data.json")
-	weapons_data = load_json_from_file("res://assets/data/weapons_data.json")
-	shields_data = load_json_from_file("res://assets/data/shields_data.json") 
-	fxs_data 	 = load_json_from_file("res://assets/data/fxs_data.json")
+	pass
 		
 func _load_grh_data():
 	var file = File.new()

@@ -11,7 +11,7 @@ height = 18.0
 script = ExtResource( 1 )
 
 [node name="Shape" type="CollisionShape2D" parent="."]
-position = Vector2( 0, -25 )
+position = Vector2( 0, -16 )
 shape = SubResource( 1 )
 
 [node name="Name" type="Label" parent="."]
@@ -29,25 +29,19 @@ clip_text = true
 
 [node name="Outfit" type="Node2D" parent="."]
 
-[node name="Body" type="Sprite" parent="Outfit"]
-region_enabled = true
+[node name="Body" type="AnimatedSprite" parent="Outfit"]
 script = ExtResource( 3 )
 
-[node name="Head" type="Sprite" parent="Outfit"]
-region_enabled = true
+[node name="Head" type="AnimatedSprite" parent="Outfit"]
 script = ExtResource( 3 )
 
-[node name="Helmet" type="Sprite" parent="Outfit"]
-region_enabled = true
+[node name="Helmet" type="AnimatedSprite" parent="Outfit"]
 script = ExtResource( 3 )
 
-[node name="Weapon" type="Sprite" parent="Outfit"]
-region_enabled = true
-region_rect = Rect2( 766, 69, 3, 0 )
+[node name="Weapon" type="AnimatedSprite" parent="Outfit"]
 script = ExtResource( 3 )
 
-[node name="Shield" type="Sprite" parent="Outfit"]
-region_enabled = true
+[node name="Shield" type="AnimatedSprite" parent="Outfit"]
 script = ExtResource( 3 )
 
 [node name="Effects" type="Node2D" parent="."]

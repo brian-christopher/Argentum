@@ -94,6 +94,21 @@ func move_to_heading(heading:int) -> void:
 
 func _process(delta: float) -> void:
 	_process_movement(delta) 
+	_process_animation()
+	
+func _process_animation() -> void:
+	var state = "walk" if is_moving else "idle"
+	var direction = "down"
+	
+	match heading:
+		Global.Heading.Up:
+			direction = "up"
+		Global.Heading.Left:
+			direction = "left"
+		Global.Heading.Right:
+			direction = "right"
+			
+	play_animation(state + "_" + direction)
 	
 func _process_movement(delta:float) -> void:
 	if !is_moving: return
@@ -104,35 +119,44 @@ func _process_movement(delta:float) -> void:
 	  
 func set_heading(p_heading:int) -> void:
 	heading = p_heading
-	
-	for sprite in get_node("Outfit").get_children():
-		if sprite.has_method("set_heading"):
-			sprite.set_heading(heading)
 
 func set_weapon(id:int) -> void:
 	weapon = id
-	_weapon_sprite.initalize(Global.weapons_data[id]) 
+	_set_animation(_weapon_sprite, "res://resources/weapons/weapon_%d.tres" % id)
 
 func set_shield(id:int) -> void:
-	shield = id 
-	_shield_sprite.initalize(Global.shields_data[id]) 
- 
+	shield = id
+	_set_animation(_shield_sprite, "res://resources/shields/shield_%d.tres" % id)
+	
 func set_body(id:int) -> void:
 	body = id
-	_body_sprite.initalize(Global.bodies_data[id])
- 
-func set_head(id:int) -> void:
-	head = id 
-	_head_sprite.offset_x = Global.bodies_data[body].offsetX 
-	_head_sprite.offset_y = Global.bodies_data[body].offsetY
-	_head_sprite.initalize(Global.heads_data[id]) 
- 
-func set_helmet(id:int) -> void: 
-	helmet = id 
-	_helmet_sprite.offset_x = Global.bodies_data[body].offsetX 
-	_helmet_sprite.offset_y = Global.bodies_data[body].offsetY
-	_helmet_sprite.initalize(Global.helmets_data[id]) 
+	_set_animation(_body_sprite, "res://resources/bodies/bodie_%d.tres" % id, true)
 	
+func set_head(id:int) -> void:
+	head = id
+	_set_animation(_head_sprite, "res://resources/heads/head_%d.tres" % id)
+  
+func set_helmet(id:int) -> void: 
+	helmet = id
+	_set_animation(_helmet_sprite, "res://resources/helmets/helmet_%d.tres" % id)
+  
+func _set_animation(node:AnimatedSprite, resource_path:String, is_body:bool = false):
+	if !ResourceLoader.exists(resource_path):
+		node.visible = false
+	else:
+		var resource = load(resource_path)
+		
+		node.visible = true
+		node.frames = resource.animation
+		
+		var texture = resource.animation.get_frame("idle_down", 0)
+		node.offset.y = -texture.get_height() / 2
+		
+		if is_body:
+			_head_sprite.position.y = (resource.head_offset_y) 
+			_helmet_sprite.position.y = (resource.head_offset_y) 
+			
+
 func talk(message:String, color:Color = Color.white) -> void:
 	$Dialog.text = message
 	$Dialog.self_modulate = color
@@ -161,3 +185,20 @@ func add_effect(effectId:int, loops:int) -> void:
 			 
 		fx.intialize(resource)	
 	
+func play_animation(animation_name:String) -> void:	
+	if _body_sprite.frames:
+		_body_sprite.play(animation_name)
+	
+	if _weapon_sprite.frames:
+		_weapon_sprite.play(animation_name)
+	
+	if _shield_sprite.frames:
+		_shield_sprite.play(animation_name)
+	
+	if _head_sprite.frames:
+		_head_sprite.play(animation_name.replace("walk", "idle"))
+	
+	if _helmet_sprite.frames:
+		_helmet_sprite.play(animation_name.replace("walk", "idle"))
+	
+		

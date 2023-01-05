@@ -1,0 +1,49 @@
+[gd_resource type="Resource" load_steps=8 format=2]
+
+[ext_resource path="res://engine/data/AnimationData.gd" type="Script" id=1]
+[ext_resource path="res://assets/graphics/64.png" type="Texture" id=2]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 17, 16 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 2 )
+region = Rect2( 34, 0, 17, 16 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 2 )
+region = Rect2( 17, 0, 17, 16 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 2 )
+region = Rect2( 51, 0, 17, 16 )
+
+[sub_resource type="SpriteFrames" id=5]
+animations = [ {
+"frames": [ SubResource( 1 ) ],
+"loop": true,
+"name": "idle_down",
+"speed": 12.0
+}, {
+"frames": [ SubResource( 2 ) ],
+"loop": true,
+"name": "idle_left",
+"speed": 12.0
+}, {
+"frames": [ SubResource( 3 ) ],
+"loop": true,
+"name": "idle_right",
+"speed": 12.0
+}, {
+"frames": [ SubResource( 4 ) ],
+"loop": true,
+"name": "idle_up",
+"speed": 12.0
+} ]
+
+[resource]
+script = ExtResource( 1 )
+head_offset_x = 0
+head_offset_y = 0
+animation = SubResource( 5 )
