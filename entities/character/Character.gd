@@ -9,6 +9,8 @@ onready var _helmet_sprite = find_node("Helmet")
 onready var _weapon_sprite = find_node("Weapon")
 onready var _shield_sprite = find_node("Shield")
 
+onready var _debug = find_node("Debug")
+
 const FXS_SCENE = preload("res://entities/effects/Fxs.tscn")
  
 #identificador unico que el serve asigna al char
@@ -23,6 +25,7 @@ var grid_position_y := 0
 
 var criminal := 0
 var privs := 0
+var invisible := false setget set_invisible
 
 var _target_position := Vector2.ZERO
 
@@ -34,7 +37,14 @@ var shield := 0 setget set_shield
 
 func _ready() -> void:
 	pass # Replace with function body. 
+
+func set_invisible(value:bool) -> void:
+	invisible = value
 	
+	if !is_inside_tree():
+		yield(self, "ready") 
+	$Outfit.visible = invisible
+			
 func set_grid_positioon(x:int, y:int) -> void:
 	var offset = Vector2(16, 32)
 	
@@ -95,6 +105,8 @@ func move_to_heading(heading:int) -> void:
 func _process(delta: float) -> void:
 	_process_movement(delta) 
 	_process_animation()
+	
+	_debug.text = "[ID:%d]\n[%d-%d]" % [guid, grid_position_x + 1 , grid_position_y + 1]
 	
 func _process_animation() -> void:
 	var state = "walk" if is_moving else "idle"
@@ -201,4 +213,3 @@ func play_animation(animation_name:String) -> void:
 	if _helmet_sprite.frames:
 		_helmet_sprite.play(animation_name.replace("walk", "idle"))
 	
-		

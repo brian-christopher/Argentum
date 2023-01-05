@@ -422,6 +422,10 @@ func _init_handlers():
 	_handlers[ServerPacketID.UserSwing] = "_handle_user_swing"
 	_handlers[ServerPacketID.NPCSwing] = "_handle_npc_swing" 
 	_handlers[ServerPacketID.UpdateGold] = "_handle_update_gold" 
+	_handlers[ServerPacketID.WorkRequestTarget] = "_handle_work_request_target"
+	_handlers[ServerPacketID.NPCKillUser] = "_handle_npc_kill_user"
+	_handlers[ServerPacketID.UpdateTagAndStatus] = "_handle_update_tag_and_status"
+	_handlers[ServerPacketID.SetInvisible] = "_handle_set_invisible"
 
 func handle_incoming_data(bytes):
 	var buffer = ByteQueue.new()
@@ -439,6 +443,23 @@ func handle_incoming_data(bytes):
 			break
 	 
 ############################################### INICIO DE HANDLERS ##########################################################################
+func _handle_set_invisible(buffer:StreamPeer) -> Dictionary:
+	var data = {}
+	data.char_id = buffer.get_16()
+	data.invisible = buffer.get_u8()
+	
+	return data
+
+func _handle_update_tag_and_status(buffer:StreamPeer) -> Dictionary:
+	var data = {}
+	data.char_id = buffer.get_16()
+	data.criminal = buffer.get_u8()
+	data.userTag = buffer.get_utf8_string() 
+	return data
+
+func _handle_work_request_target(data:StreamPeer) -> int:
+	return data.get_u8()
+
 func _handle_update_gold(data:StreamPeer) -> int:
 	return data.get_32()
 
@@ -714,6 +735,9 @@ func _handle_update_hp(buffer:StreamPeerBuffer) -> int:
 	
 func _handle_npc_hit_user(buffer:StreamPeerBuffer) -> int:
 	return buffer.get_16()
+	
+func _handle_npc_kill_user(_buff):
+	pass
 
 ############################################### FIN DE HANDLERS ##########################################################################
 
@@ -783,6 +807,27 @@ func write_use_item(slot:int):
 	auxiliarBuffer.put_u8(ClientPacketID.UseItem)
 	auxiliarBuffer.put_u8(slot)
 	
+func write_left_click(x:int, y:int):
+	auxiliarBuffer.put_u8(ClientPacketID.LeftClick)
+	auxiliarBuffer.put_u8(x)
+	auxiliarBuffer.put_u8(y)
+	
+func write_double_click(x:int, y:int):
+	auxiliarBuffer.put_u8(ClientPacketID.DoubleClick)
+	auxiliarBuffer.put_u8(x)
+	auxiliarBuffer.put_u8(y)
+	
+func write_work(skill:int):
+	auxiliarBuffer.put_u8(ClientPacketID.Work)
+	auxiliarBuffer.put_u8(skill) 
+	
+func write_cast_spell(slot:int):
+	auxiliarBuffer.put_u8(ClientPacketID.CastSpell)
+	auxiliarBuffer.put_u8(slot) 
+	
+func write_spell_info(slot:int):
+	auxiliarBuffer.put_u8(ClientPacketID.SpellInfo)
+	auxiliarBuffer.put_u8(slot) 
 ############################################### FIN DE WRITERS ##########################################################################
  
 

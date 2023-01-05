@@ -1,0 +1,67 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://assets/fonts/source_code_pro_12.tres" type="DynamicFont" id=1]
+[ext_resource path="res://UI-DEMO/SpellContainerGUI.gd" type="Script" id=2]
+
+[node name="SpellContainerGUI" type="VBoxContainer"]
+margin_right = 177.0
+margin_bottom = 242.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="SpellList" type="ItemList" parent="."]
+margin_right = 177.0
+margin_bottom = 182.0
+focus_mode = 0
+size_flags_vertical = 3
+
+[node name="Buttons" type="HBoxContainer" parent="."]
+margin_top = 186.0
+margin_right = 177.0
+margin_bottom = 242.0
+
+[node name="BtnCast" type="Button" parent="Buttons"]
+margin_right = 133.0
+margin_bottom = 56.0
+focus_mode = 0
+size_flags_horizontal = 3
+enabled_focus_mode = 0
+text = "Lanzar"
+
+[node name="BtnInfo" type="Button" parent="Buttons"]
+margin_left = 137.0
+margin_right = 154.0
+margin_bottom = 56.0
+focus_mode = 0
+enabled_focus_mode = 0
+text = "I"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Buttons"]
+margin_left = 158.0
+margin_right = 177.0
+margin_bottom = 56.0
+
+[node name="BtnUp" type="Button" parent="Buttons/VBoxContainer"]
+margin_right = 19.0
+margin_bottom = 26.0
+focus_mode = 0
+custom_fonts/font = ExtResource( 1 )
+enabled_focus_mode = 0
+text = "▲"
+
+[node name="BtnDown" type="Button" parent="Buttons/VBoxContainer"]
+margin_top = 30.0
+margin_right = 19.0
+margin_bottom = 56.0
+focus_mode = 0
+custom_fonts/font = ExtResource( 1 )
+enabled_focus_mode = 0
+text = "▼"
+
+[connection signal="item_selected" from="SpellList" to="." method="_on_SpellList_item_selected"]
+[connection signal="pressed" from="Buttons/BtnCast" to="." method="_on_BtnCast_pressed"]
+[connection signal="pressed" from="Buttons/BtnInfo" to="." method="_on_BtnInfo_pressed"]
+[connection signal="pressed" from="Buttons/VBoxContainer/BtnUp" to="." method="_on_BtnUp_pressed"]
+[connection signal="pressed" from="Buttons/VBoxContainer/BtnDown" to="." method="_on_BtnDown_pressed"]

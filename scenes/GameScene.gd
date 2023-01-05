@@ -4,8 +4,7 @@ export(PackedScene) var character_scene
 
 onready var _main_camera = find_node("MainCamera")
 onready var _map_container = find_node("MapContainer")
-onready var _main_panel = find_node("MobileMainPanel")
-onready var _joystick = find_node("VirtualJoystick")
+onready var _main_panel = find_node("MobileMainPanel") 
 
 onready var _fpsLabel = find_node("FPSLabel")
  
@@ -16,10 +15,10 @@ var _player_inventory:Inventory
 var _main_character_id := 0
 
 var input_map = {
-	"ui_left" : Global.Heading.Left,
+	"ui_left"  : Global.Heading.Left,
 	"ui_right" : Global.Heading.Right,
-	"ui_up" : Global.Heading.Up,
-	"ui_down" : Global.Heading.Down,
+	"ui_up"    : Global.Heading.Up,
+	"ui_down"  : Global.Heading.Down,
 }
  
 onready var _server_packet_names:Array = GameProtocol.ServerPacketID.keys()
@@ -37,10 +36,8 @@ func _ready():
 	if _main_panel:
 		_main_panel.initialize(_player_stats, _player_inventory, _protocol) 
 		
-#	var world_viewport = get_node("GUI/WolrdContainer/World")
-#	if world_viewport:
-#		world_viewport.size = Vector2(544, 416)
-
+	var ui = find_node("UI")
+	ui.initialize(_player_stats, _player_inventory, _protocol)
 
 func _on_disconnected():
 	var scene = load("res://scenes/LobbyScene.tscn").instance()
@@ -111,9 +108,31 @@ func _on_parse_data(packet_id:int, data):
 			_parse_update_hunger_anb_thirst(data)
 		GameProtocol.ServerPacketID.CreateFX:
 			_parse_create_fx(data)
+		GameProtocol.ServerPacketID.UpdateTagAndStatus:
+			_parse_update_tag_and_status(data)
+		GameProtocol.ServerPacketID.SetInvisible:
+			_parse_set_invisible(data)
  
 		_:
 			print(_server_packet_names[packet_id])
+
+func _parse_set_invisible(data:Dictionary) -> void:
+	if !_map_container.current_map: return
+	var map = _map_container.current_map
+	var character = map.find_character(data.char_id)
+	
+	if character:
+		character.invisible = data.invisible
+
+func _parse_update_tag_and_status(data:Dictionary) -> void:
+	if !_map_container.current_map: return
+	var map = _map_container.current_map
+	var character = map.find_character(data.char_id)
+	
+	if character:
+		character.criminal = data.criminal
+		character.set_character_name(data.userTag) 
+
 func _parse_update_gold(value:int) -> void:
 	_player_stats.gold = value
 
@@ -281,15 +300,13 @@ func _parse_object_delete(data:Dictionary) -> void:
 func _update_info() -> void:
 	_fpsLabel.text = "FPS: %d" % Engine.get_frames_per_second() 
  
-func _process_movement(_delta:float) -> void:
-	return
-	var velocity = _joystick.get_velocity().round() 
+func _process_movement() -> void: 
+	var heading = get_input_heading()
 	
+	if heading == 0: return
 	if !_map_container.current_map: return
-	if velocity == Vector2.ZERO: return
 	
 	var map = _map_container.current_map
-	var heading = _get_movement_heading(velocity)
 	var main_char = map.find_character(_main_character_id)
 	
 	if main_char and !main_char.is_moving:
@@ -305,6 +322,27 @@ func _process_movement(_delta:float) -> void:
 				main_char.heading = heading
 				_protocol.write_change_heading(heading)
 		
+func _process(delta: float) -> void:
+	_update_info()
+	_process_movement()
+	_camera_follow_character()
+ 
+	if Input.is_action_just_pressed("attack"):
+		_protocol.write_attack()
+	if Input.is_action_just_pressed("toggle_combat_mode"):
+		_protocol.write_combat_mode_toggle()
+	if Input.is_action_just_pressed("pickup"):
+		_protocol.write_pick_up()
+						 
+	_protocol.flush_data()
+	
+func _camera_follow_character() -> void:
+	if !_map_container.current_map: return
+	
+	var main_character = _map_container.current_map.find_character(_main_character_id)
+	if main_character:
+		_main_camera.position = main_character.position
+
 func _get_movement_heading(velocity:Vector2) -> int:
 	match velocity:
 		Vector2.LEFT:
@@ -326,40 +364,11 @@ func _get_movement_heading(velocity:Vector2) -> int:
 			
 	return 0
 	
-func _process(delta: float) -> void:
-	_update_info()
-	_process_movement(delta)
-	_follow_character(delta)
-
-	if _map_container.current_map:
-		var main_character = _map_container.current_map.find_character(_main_character_id)
-		
-		
-		if main_character && !main_character.is_moving:
-			for i in input_map:
-				if Input.is_action_pressed(i):
-					var offset = Global.heading_to_vector(input_map[i])
-					var new_position_x = main_character.grid_position_x + offset.x
-					var new_position_y = main_character.grid_position_y + offset.y
-					
-					if _map_container.current_map.can_walk(new_position_x, new_position_y):
-						main_character.move_to_heading(input_map[i])
-						_protocol.write_walk(input_map[i])
-						break
-						
-		if Input.is_action_just_pressed("attack"):
-			_protocol.write_attack()
-		if Input.is_action_just_pressed("toggle_combat_mode"):
-			_protocol.write_combat_mode_toggle()
-		if Input.is_action_just_pressed("pickup"):
-			_protocol.write_pick_up()
-						 
-	_protocol.flush_data()
+func get_input_heading() -> int:
+	var input = 0
 	
-func _follow_character(_delta:float) -> void:
-	if !_map_container.current_map: return
-	
-	var main_character = _map_container.current_map.find_character(_main_character_id)
-	if main_character:
-		_main_camera.position = main_character.position
-
+	for i in input_map:
+		if Input.is_action_pressed(i):
+			input = input_map[i]
+	return input
+		

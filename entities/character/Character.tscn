@@ -63,4 +63,16 @@ clip_text = true
 [node name="RemoveDialog" type="Timer" parent="."]
 wait_time = 10.0
 
+[node name="Debug" type="Label" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -88.5
+margin_top = 19.0
+margin_right = 88.5
+margin_bottom = 88.0
+text = "sadasdsad
+asdasdassa"
+align = 1
+valign = 1
+
 [connection signal="timeout" from="RemoveDialog" to="." method="_on_RemoveDialog_timeout"]
