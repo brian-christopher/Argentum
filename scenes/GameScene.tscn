@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scenes/GameScene.gd" type="Script" id=1]
 [ext_resource path="res://entities/character/Character.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/MapContainer.gd" type="Script" id=3]
 [ext_resource path="res://scenes/CanvasLayer.gd" type="Script" id=4]
 [ext_resource path="res://UI-DEMO/SpellContainerGUI.tscn" type="PackedScene" id=5]
+[ext_resource path="res://UI-DEMO/InventoryContainerGUI.tscn" type="PackedScene" id=6]
 
 [node name="GameScene" type="Node"]
 script = ExtResource( 1 )
@@ -27,15 +28,17 @@ margin_bottom = 63.0
 align = 2
 valign = 1
 
+[node name="InventoryContainerGUI" parent="UI" instance=ExtResource( 6 )]
+
 [node name="SpellContainerGUI" parent="UI" instance=ExtResource( 5 )]
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-margin_left = -230.0
-margin_top = -81.0
-margin_right = 0.0
-margin_bottom = 184.0
+margin_left = -262.0
+margin_top = -237.0
+margin_right = -32.0
+margin_bottom = 28.0
 
 [node name="Console" type="RichTextLabel" parent="UI"]
 margin_left = 29.0
@@ -43,3 +46,11 @@ margin_top = 17.0
 margin_right = 595.0
 margin_bottom = 220.0
 scroll_following = true
+
+[node name="SendTxt" type="LineEdit" parent="UI"]
+margin_left = 38.0
+margin_top = 227.0
+margin_right = 585.0
+margin_bottom = 251.0
+
+[connection signal="text_entered" from="UI/SendTxt" to="UI" method="_on_SendTxt_text_entered"]

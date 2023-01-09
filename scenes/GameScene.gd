@@ -327,12 +327,7 @@ func _process(delta: float) -> void:
 	_process_movement()
 	_camera_follow_character()
  
-	if Input.is_action_just_pressed("attack"):
-		_protocol.write_attack()
-	if Input.is_action_just_pressed("toggle_combat_mode"):
-		_protocol.write_combat_mode_toggle()
-	if Input.is_action_just_pressed("pickup"):
-		_protocol.write_pick_up()
+
 						 
 	_protocol.flush_data()
 	
@@ -372,3 +367,4 @@ func get_input_heading() -> int:
 			input = input_map[i]
 	return input
 		
+ 

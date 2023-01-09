@@ -426,6 +426,8 @@ func _init_handlers():
 	_handlers[ServerPacketID.NPCKillUser] = "_handle_npc_kill_user"
 	_handlers[ServerPacketID.UpdateTagAndStatus] = "_handle_update_tag_and_status"
 	_handlers[ServerPacketID.SetInvisible] = "_handle_set_invisible"
+	_handlers[ServerPacketID.UserAttackedSwing] = "_handle_user_attacked_swing"
+	_handlers[ServerPacketID.UserHittedByUser] = "_handle_user_hitted_by_user"
 
 func handle_incoming_data(bytes):
 	var buffer = ByteQueue.new()
@@ -443,6 +445,17 @@ func handle_incoming_data(bytes):
 			break
 	 
 ############################################### INICIO DE HANDLERS ##########################################################################
+func _handle_user_hitted_by_user(buffer:StreamPeer) -> Dictionary:
+	var data = {}
+	data.attacker = buffer.get_16()
+	data.case = buffer.get_u8()
+	data.damage = buffer.get_16()
+	
+	return data
+
+func _handle_user_attacked_swing(buffer:StreamPeer) -> int:
+	return buffer.get_16()
+	
 func _handle_set_invisible(buffer:StreamPeer) -> Dictionary:
 	var data = {}
 	data.char_id = buffer.get_16()
@@ -828,6 +841,17 @@ func write_cast_spell(slot:int):
 func write_spell_info(slot:int):
 	auxiliarBuffer.put_u8(ClientPacketID.SpellInfo)
 	auxiliarBuffer.put_u8(slot) 
+
+func write_equip_item(slot:int):
+	auxiliarBuffer.put_u8(ClientPacketID.EquipItem)
+	auxiliarBuffer.put_u8(slot) 
+	
+func write_talk(chat:String):
+	auxiliarBuffer.put_u8(ClientPacketID.Talk)
+	auxiliarBuffer.put_utf8_string(chat) 
+	
+func write_quit():
+	auxiliarBuffer.put_u8(ClientPacketID.Quit)	
 ############################################### FIN DE WRITERS ##########################################################################
  
 

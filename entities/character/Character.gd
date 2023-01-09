@@ -43,7 +43,7 @@ func set_invisible(value:bool) -> void:
 	
 	if !is_inside_tree():
 		yield(self, "ready") 
-	$Outfit.visible = invisible
+	$Outfit.visible = !invisible
 			
 func set_grid_positioon(x:int, y:int) -> void:
 	var offset = Vector2(16, 32)
