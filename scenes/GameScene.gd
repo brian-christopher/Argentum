@@ -8,36 +8,31 @@ onready var _main_panel = find_node("MobileMainPanel")
 
 onready var _fpsLabel = find_node("FPSLabel")
  
-var _protocol:GameProtocol
-var _player_stats:PlayerStats
-var _player_inventory:Inventory
+var _protocol:GameProtocol 
+var _player_data:PlayerData
   
 var _main_character_id := 0
 
 var input_map = {
-	"ui_left"  : Global.Heading.Left,
-	"ui_right" : Global.Heading.Right,
-	"ui_up"    : Global.Heading.Up,
-	"ui_down"  : Global.Heading.Down,
+	"move_left"  : Global.Heading.Left,
+	"move_right" : Global.Heading.Right,
+	"move_up"    : Global.Heading.Up,
+	"move_down"  : Global.Heading.Down,
 }
  
 onready var _server_packet_names:Array = GameProtocol.ServerPacketID.keys()
 
 func initiaze(protocol:GameProtocol):
 	_protocol = protocol
-	_player_stats = PlayerStats.new()
-	_player_inventory = Inventory.new(Global.MAX_INVENTORY_SLOTS)
+	_player_data = PlayerData.new(Global.MAX_INVENTORY_SLOTS) 
 	
 	protocol.connect("parse_data", self, "_on_parse_data")
 	Connection.connect("disconnected", self, "_on_disconnected")  
 	 
 		 
-func _ready():
-	if _main_panel:
-		_main_panel.initialize(_player_stats, _player_inventory, _protocol) 
-		
+func _ready():  
 	var ui = find_node("UI")
-	ui.initialize(_player_stats, _player_inventory, _protocol)
+	ui.initialize(_player_data, _protocol)
 
 func _on_disconnected():
 	var scene = load("res://scenes/LobbyScene.tscn").instance()
@@ -69,10 +64,10 @@ func _on_parse_data(packet_id:int, data):
 			_parse_update_gold(data)
 			
 		GameProtocol.ServerPacketID.UpdateHP:
-			_player_stats.hp = data
+			_player_data.stats.hp = data
 			
 		GameProtocol.ServerPacketID.UpdateSta:
-			_player_stats.sta = data
+			_player_data.stats.sta = data
 		
 		GameProtocol.ServerPacketID.UpdateUserStats:
 			_parse_update_player_stats(data)
@@ -112,10 +107,17 @@ func _on_parse_data(packet_id:int, data):
 			_parse_update_tag_and_status(data)
 		GameProtocol.ServerPacketID.SetInvisible:
 			_parse_set_invisible(data)
+		GameProtocol.ServerPacketID.WorkRequestTarget:
+			_parse_work_request_target(data)  
+		
  
 		_:
 			print(_server_packet_names[packet_id])
 
+func _parse_work_request_target(skill:int) -> void:
+	_player_data.using_skill = skill
+	Input.set_default_cursor_shape(Input.CURSOR_CROSS) 
+	
 func _parse_set_invisible(data:Dictionary) -> void:
 	if !_map_container.current_map: return
 	var map = _map_container.current_map
@@ -134,13 +136,13 @@ func _parse_update_tag_and_status(data:Dictionary) -> void:
 		character.set_character_name(data.userTag) 
 
 func _parse_update_gold(value:int) -> void:
-	_player_stats.gold = value
+	_player_data.stats.gold = value
 
 func _parse_update_hunger_anb_thirst(data:Dictionary) -> void:
-	_player_stats.max_sed = data.max_agua
-	_player_stats.sed = data.min_agua
-	_player_stats.ham = data.min_ham 
-	_player_stats.max_ham = data.max_ham 
+	_player_data.stats.max_sed = data.max_agua
+	_player_data.stats.sed = data.min_agua
+	_player_data.stats.ham = data.min_ham 
+	_player_data.stats.max_ham = data.max_ham 
 			
 func _parse_change_inventory_slot(data:Dictionary) -> void:
 	var item = Item.new()
@@ -155,7 +157,7 @@ func _parse_change_inventory_slot(data:Dictionary) -> void:
 		var texture_id = Global.grh_data[data.grh_index].file_num
 		item.texture = Global.load_texture_from_id(texture_id) 
 
-	_player_inventory.set_item_stack(data.slot - 1, item, data.amount, data.equipped)
+	_player_data.inventory.set_item_stack(data.slot - 1, item, data.amount, data.equipped)
 			
 func _parse_create_fx(data:Dictionary) -> void:
 	if !_map_container.current_map: return
@@ -166,7 +168,7 @@ func _parse_create_fx(data:Dictionary) -> void:
 		character.add_effect(data.fx, data.fx_loop)
 			
 func _parse_change_spell_slot(data:Dictionary) -> void:
-	_player_stats.set_spell(data.slot - 1, data.spell_name)
+	_player_data.stats.set_spell(data.slot - 1, data.spell_name)
 			
 func _parse_chat_over_head(data:Dictionary) -> void:
 	if !_map_container.current_map: return
@@ -196,19 +198,19 @@ func _parse_block_position(data:Dictionary) -> void:
 		_map_container.current_map.set_tile_block(x, y, data.value)
 		 
 func _parse_update_player_stats(stats:Dictionary) -> void:
-	_player_stats.hp = stats.min_hp
-	_player_stats.max_hp = stats.max_hp
+	_player_data.stats.hp = stats.min_hp
+	_player_data.stats.max_hp = stats.max_hp
 	
-	_player_stats.mp = stats.min_mp
-	_player_stats.max_mp = stats.max_hp
+	_player_data.stats.mp = stats.min_mp
+	_player_data.stats.max_mp = stats.max_hp
 
-	_player_stats.sta = stats.min_sta
-	_player_stats.max_sta = stats.max_sta
+	_player_data.stats.sta = stats.min_sta
+	_player_data.stats.max_sta = stats.max_sta
 	
-	_player_stats.gold = stats.gold
-	_player_stats.level = stats.lvl
-	_player_stats.elu = stats.elu
-	_player_stats.elv = stats.u_lvl
+	_player_data.stats.gold = stats.gold
+	_player_data.stats.level = stats.lvl
+	_player_data.stats.elu = stats.elu
+	_player_data.stats.elv = stats.u_lvl
 	
 func _parse_create_character(data:Dictionary) -> void:
 	var character = character_scene.instance() as Character
@@ -366,5 +368,23 @@ func get_input_heading() -> int:
 		if Input.is_action_pressed(i):
 			input = input_map[i]
 	return input
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed:
+		var viewport = get_viewport()
+		var mouse_position = (get_viewport().canvas_transform.xform_inv(event.position) / 32).ceil() as Vector2
+		if event.doubleclick:
+			_protocol.write_double_click(mouse_position.x, mouse_position.y)
+			Input.set_default_cursor_shape(Input.CURSOR_ARROW) 
+			_player_data.using_skill = 0	
+			return 
 		
- 
+		if _player_data.using_skill != 0 : 
+			
+			if _player_data.using_skill == Global.eSkill.Magia:
+				_protocol.write_work_left_click(mouse_position.x, mouse_position.y, _player_data.using_skill)
+			 
+			Input.set_default_cursor_shape(Input.CURSOR_ARROW) 
+			_player_data.using_skill = 0	
+		else:
+			pass

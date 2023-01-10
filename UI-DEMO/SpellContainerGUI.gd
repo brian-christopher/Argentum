@@ -1,20 +1,19 @@
 extends VBoxContainer
 
-var stats:PlayerStats
+var _player_data:PlayerData
 var protocol:GameProtocol
 var spell_selected = 0
 
 onready var spellList = find_node("SpellList")
-
-
-func initialize(stats:PlayerStats, protocol:GameProtocol) -> void:
-	self.stats = stats
+ 
+func initialize(player_data:PlayerData, protocol:GameProtocol) -> void:
+	self._player_data = player_data
 	self.protocol = protocol
 	
-	for i in stats.spells:
+	for i in player_data.stats.spells:
 		spellList.add_item(i)
 		
-	stats.connect("change_spell_slot", self, "_on_change_spell_slot")
+	player_data.stats.connect("change_spell_slot", self, "_on_change_spell_slot")
 
 func _on_BtnCast_pressed() -> void:
 	if spellList.get_item_text(spell_selected) != "(None)":
@@ -23,11 +22,11 @@ func _on_BtnCast_pressed() -> void:
  
 func _on_BtnUp_pressed() -> void:
 	if spell_selected <= 0: return
-	var new_text = stats.spells[spell_selected - 1]
-	var old_text = stats.spells[spell_selected]
+	var new_text = _player_data.stats.spells[spell_selected - 1]
+	var old_text = _player_data.stats.spells[spell_selected]
 	
-	stats.set_spell(spell_selected - 1, old_text)
-	stats.set_spell(spell_selected,     new_text)
+	_player_data.stats.set_spell(spell_selected - 1, old_text)
+	_player_data.stats.set_spell(spell_selected,     new_text)
 	
 	protocol.write_move_sell(true,  spell_selected + 1)
 	spellList.select(spell_selected - 1)
@@ -37,11 +36,11 @@ func _on_BtnUp_pressed() -> void:
 func _on_BtnDown_pressed() -> void:
 	if spell_selected == Global.MAXHECHI - 1: return
 	
-	var old_text = stats.spells[spell_selected]
-	var new_text = stats.spells[spell_selected + 1]
+	var old_text = _player_data.stats.spells[spell_selected]
+	var new_text = _player_data.stats.spells[spell_selected + 1]
 	
-	stats.set_spell(spell_selected + 1, old_text)
-	stats.set_spell(spell_selected,     new_text)
+	_player_data.stats.set_spell(spell_selected + 1, old_text)
+	_player_data.stats.set_spell(spell_selected,     new_text)
 	
 	protocol.write_move_sell(false,  spell_selected + 1)
 	spellList.select(spell_selected + 1)

@@ -179,6 +179,8 @@ func _on_RemoveDialog_timeout() -> void:
 	$Dialog.text = ""
 
 func add_effect(effectId:int, loops:int) -> void:
+	if effectId == 0 : return
+	
 	var resource = load("res://resources/fxs/effect_%d.tres" % effectId) as SpriteFrames
 	if !resource:
 		return

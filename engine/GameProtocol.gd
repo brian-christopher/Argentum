@@ -852,6 +852,12 @@ func write_talk(chat:String):
 	
 func write_quit():
 	auxiliarBuffer.put_u8(ClientPacketID.Quit)	
+
+func write_work_left_click(x:int, y:int, skill:int):
+	auxiliarBuffer.put_u8(ClientPacketID.WorkLeftClick)
+	auxiliarBuffer.put_u8(x)
+	auxiliarBuffer.put_u8(y)
+	auxiliarBuffer.put_u8(skill)
 ############################################### FIN DE WRITERS ##########################################################################
  
 

@@ -10,20 +10,18 @@ var _protocol:GameProtocol
 func _ready() -> void:
 	send_txt.visible = false
 
-func initialize(stats:PlayerStats, inventory:Inventory, protocol:GameProtocol) -> void:
+func initialize(player_data:PlayerData, protocol:GameProtocol) -> void:
 	_protocol = protocol
 	
-	spellContainer.initialize(stats, protocol)
-	inventoryContainer.initialize(inventory, protocol)
+	spellContainer.initialize(player_data, protocol)
+	inventoryContainer.initialize(player_data.inventory, protocol)
 	
 	protocol.connect("parse_data", self, "_on_parse_data")
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey:
 		if event.pressed:
-			match event.scancode:
-				KEY_F12:
-					OS.window_fullscreen = !OS.window_fullscreen
+			match event.scancode: 
 				KEY_ENTER:
 					send_txt.visible = !send_txt.visible
 					send_txt.grab_focus()
@@ -39,7 +37,14 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	if event.is_action_pressed("hide"):
 		_protocol.write_work(Global.eSkill.Ocultarse) 
+	
+	if event.is_action_pressed("use_object"):
+		if inventoryContainer.selected_slot:
+			_protocol.write_use_item(inventoryContainer.selected_slot.slot_index + 1)
 			 
+	if event.is_action_pressed("exit_game"):
+		_protocol.write_quit() 
+			
 func _on_parse_data(packetId:int, data) -> void:
 	if packetId == GameProtocol.ServerPacketID.ConsoleMsg:
 		$Console.text += "\n" + data.message
