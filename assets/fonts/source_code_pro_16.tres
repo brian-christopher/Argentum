@@ -6,7 +6,6 @@
 size = 20
 outline_size = 1
 outline_color = Color( 0.0117647, 0, 0.0470588, 1 )
-use_mipmaps = true
 use_filter = true
 extra_spacing_top = 2
 extra_spacing_bottom = 2

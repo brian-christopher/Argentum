@@ -7,7 +7,6 @@ var current_map:Map = null
 func _ready() -> void:
 	pass # Replace with function body.
 
-
 func set_main_character_id(id:int) -> void:
 	_main_character_id = id
 	

@@ -428,7 +428,8 @@ func _init_handlers():
 	_handlers[ServerPacketID.SetInvisible] = "_handle_set_invisible"
 	_handlers[ServerPacketID.UserAttackedSwing] = "_handle_user_attacked_swing"
 	_handlers[ServerPacketID.UserHittedByUser] = "_handle_user_hitted_by_user"
-
+	_handlers[ServerPacketID.BlockedWithShieldUser] = "_handle_blocked_with_shield_user"
+	
 func handle_incoming_data(bytes):
 	var buffer = ByteQueue.new()
 	buffer.data_array = bytes
@@ -445,6 +446,10 @@ func handle_incoming_data(bytes):
 			break
 	 
 ############################################### INICIO DE HANDLERS ##########################################################################
+
+func _handle_blocked_with_shield_user(_buffer):
+	return 
+
 func _handle_user_hitted_by_user(buffer:StreamPeer) -> Dictionary:
 	var data = {}
 	data.attacker = buffer.get_16()
@@ -768,7 +773,7 @@ func write_login_existing_char(user_name:String, user_password:String):
 	for _i in range(7):
 		auxiliarBuffer.put_16(0)
 		
-func write_login_new_char(user_name:String, user_password:String, user_race:int, user_gender:int, user_class:int,user_email:String, user_home:int, skills:Array):
+func write_login_new_char(user_name:String, user_password:String, user_race:int, user_gender:int, user_class:int,user_email:String, user_home:int):
 	auxiliarBuffer.put_u8(ClientPacketID.LoginNewChar)
 	auxiliarBuffer.put_utf8_string(user_name)
 	auxiliarBuffer.put_utf8_string(user_password)
@@ -782,10 +787,7 @@ func write_login_new_char(user_name:String, user_password:String, user_race:int,
 		
 	auxiliarBuffer.put_u8(user_race)
 	auxiliarBuffer.put_u8(user_gender)
-	auxiliarBuffer.put_u8(user_class)
-	
-	for skill in skills:
-		auxiliarBuffer.put_u8(skill)
+	auxiliarBuffer.put_u8(user_class) 
 	
 	auxiliarBuffer.put_utf8_string(user_email)
 	auxiliarBuffer.put_u8(user_home)
@@ -858,6 +860,9 @@ func write_work_left_click(x:int, y:int, skill:int):
 	auxiliarBuffer.put_u8(x)
 	auxiliarBuffer.put_u8(y)
 	auxiliarBuffer.put_u8(skill)
+	
+func write_request_position_update():
+	auxiliarBuffer.put_u8(ClientPacketID.RequestPositionUpdate)
 ############################################### FIN DE WRITERS ##########################################################################
  
 

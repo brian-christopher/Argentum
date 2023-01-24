@@ -4,9 +4,11 @@ export(PackedScene) var character_scene
 
 onready var _main_camera = find_node("MainCamera")
 onready var _map_container = find_node("MapContainer")
-onready var _main_panel = find_node("MobileMainPanel") 
+ 
+onready var _fpsLabel = find_node("FPSLabel") 
+onready var _virtualJoystick = find_node("VirtualJoystick")
 
-onready var _fpsLabel = find_node("FPSLabel")
+
  
 var _protocol:GameProtocol 
 var _player_data:PlayerData
@@ -328,9 +330,7 @@ func _process(delta: float) -> void:
 	_update_info()
 	_process_movement()
 	_camera_follow_character()
- 
-
-						 
+  
 	_protocol.flush_data()
 	
 func _camera_follow_character() -> void:
@@ -362,6 +362,8 @@ func _get_movement_heading(velocity:Vector2) -> int:
 	return 0
 	
 func get_input_heading() -> int:
+	return _get_movement_heading(_virtualJoystick.velocity)
+	
 	var input = 0
 	
 	for i in input_map:
@@ -387,4 +389,4 @@ func _unhandled_input(event: InputEvent) -> void:
 			Input.set_default_cursor_shape(Input.CURSOR_ARROW) 
 			_player_data.using_skill = 0	
 		else:
-			pass
+			pass 

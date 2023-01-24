@@ -9,8 +9,9 @@ enum State{
 	Create	
 }
  
-const IP_SERVER = "127.0.0.1"
+const IP_SERVER = "127.0.0.1"#"0.tcp.sa.ngrok.io"#"190.194.38.143"
 const IP_PORT = 443 
+#tcp://0.tcp.sa.ngrok.io:17560 
 
 onready var user_name:LineEdit = find_node("UserName")
 onready var user_password:LineEdit = find_node("UserPassword")
@@ -42,7 +43,10 @@ func _on_BtnCreate_pressed():
 
 func _on_client_connected():
 	if(current_state == State.Create):
-		pass
+		var scene = create_scene.instance()
+		
+		scene.initialize(_protocol) 
+		get_parent().switch_scene(scene)
 	else:
 		_protocol.write_login_existing_char(user_name.text, user_password.text)
 		_protocol.flush_data()

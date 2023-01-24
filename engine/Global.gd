@@ -151,6 +151,46 @@ enum eObjType{
 	otCualquiera = 1000
 }
 
+const ClassNames = {
+	eClass.Paladin : "Paladin",
+	eClass.Mage : "Mago",
+	eClass.Warrior : "Guerreo",
+	eClass.Assasin : "Asesino",
+	eClass.Thief : "Ladron",
+	eClass.Bard : "Bardo",
+	eClass.Druid : "Druido",
+	eClass.Bandit : "Bandido",
+	eClass.Hunter : "Cazador",
+	eClass.Fisher : "Pescador",
+	eClass.Lumberjack : "Talador",
+	eClass.Blacksmith : "Herrero",
+	eClass.Miner : "Minero",
+	eClass.Carpenter : "Carpintero",
+	eClass.Pirat : "Pirata", 
+	eClass.Cleric : "Clerigo"
+}
+
+const GenderNames = {
+	eGenero.Hombre : "Hombre",
+	eGenero.Mujer : "Mujer"
+}
+
+const RaceNames = {
+	eRaza.Elfo : "Elfo",
+	eRaza.Gnomo : "Gnomo",
+	eRaza.Enano : "Enano",
+	eRaza.Humano : "Humano",
+	eRaza.ElfoOscuro : "Elfo Drow"
+}
+
+const HomeNames = {
+	eCiudad.cUllathorpe : "Ullathorpe",
+	eCiudad.cNix : "Nix",
+	eCiudad.cBanderbill : "Banderbill",
+	eCiudad.cLindos : "Lindos",
+	eCiudad.cArghal : "Arghâl"
+}
+ 
 class GrhData:
 	var region = Rect2()
 	var file_num  = 0

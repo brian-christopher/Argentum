@@ -30,8 +30,3 @@ func _on_item_selected(itemslot:ItemSlot) -> void:
   
 func _on_BtnAttack_pressed() -> void:
 	_protocol.write_attack()
-
-func _gui_input(event: InputEvent) -> void:
-	if event is InputEventScreenTouch:
-		if event.pressed: 
-			print("sds")

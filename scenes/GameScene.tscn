@@ -1,24 +1,57 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://scenes/GameScene.gd" type="Script" id=1]
 [ext_resource path="res://entities/character/Character.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/MapContainer.gd" type="Script" id=3]
-[ext_resource path="res://scenes/CanvasLayer.gd" type="Script" id=4]
+[ext_resource path="res://scenes/UI.gd" type="Script" id=4]
 [ext_resource path="res://UI-DEMO/SpellContainerGUI.tscn" type="PackedScene" id=5]
 [ext_resource path="res://UI-DEMO/InventoryContainerGUI.tscn" type="PackedScene" id=6]
+[ext_resource path="res://ui/mobile/VirtualJoystick.tscn" type="PackedScene" id=7]
+[ext_resource path="res://ui/mobile/MobileMainPanel.tscn" type="PackedScene" id=8]
 
 [node name="GameScene" type="Node"]
 script = ExtResource( 1 )
 character_scene = ExtResource( 2 )
 
-[node name="MainCamera" type="Camera2D" parent="."]
-current = true
-
-[node name="MapContainer" type="Node2D" parent="."]
-script = ExtResource( 3 )
-
 [node name="UI" type="CanvasLayer" parent="."]
 script = ExtResource( 4 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="WorldContainer" type="ViewportContainer" parent="UI/VBoxContainer"]
+margin_right = 1280.0
+margin_bottom = 536.0
+rect_min_size = Vector2( 0, 500 )
+size_flags_vertical = 3
+stretch = true
+
+[node name="World" type="Viewport" parent="UI/VBoxContainer/WorldContainer"]
+size = Vector2( 1280, 536 )
+handle_input_locally = false
+usage = 0
+render_target_update_mode = 3
+audio_listener_enable_2d = true
+
+[node name="MainCamera" type="Camera2D" parent="UI/VBoxContainer/WorldContainer/World"]
+current = true
+
+[node name="MapContainer" type="Node2D" parent="UI/VBoxContainer/WorldContainer/World"]
+script = ExtResource( 3 )
+
+[node name="MobileMainPanel" parent="UI/VBoxContainer" instance=ExtResource( 8 )]
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 0.0
+margin_top = 540.0
+margin_right = 1280.0
+margin_bottom = 720.0
 
 [node name="FPSLabel" type="Label" parent="UI"]
 anchor_left = 1.0
@@ -29,28 +62,40 @@ align = 2
 valign = 1
 
 [node name="InventoryContainerGUI" parent="UI" instance=ExtResource( 6 )]
+visible = false
+margin_left = -884.0
+margin_top = -1230.0
+margin_right = -614.0
+margin_bottom = -1012.0
 
 [node name="SpellContainerGUI" parent="UI" instance=ExtResource( 5 )]
+visible = false
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-margin_left = -262.0
-margin_top = -237.0
-margin_right = -32.0
-margin_bottom = 28.0
+margin_left = -310.0
+margin_top = -1248.0
+margin_right = -80.0
+margin_bottom = -983.0
 
 [node name="Console" type="RichTextLabel" parent="UI"]
-margin_left = 29.0
-margin_top = 17.0
-margin_right = 595.0
-margin_bottom = 220.0
+visible = false
+margin_left = 1148.0
+margin_top = -784.0
+margin_right = 1714.0
+margin_bottom = -581.0
+mouse_filter = 1
 scroll_following = true
 
 [node name="SendTxt" type="LineEdit" parent="UI"]
-margin_left = 38.0
-margin_top = 227.0
-margin_right = 585.0
-margin_bottom = 251.0
+visible = false
+margin_left = 442.0
+margin_top = -571.0
+margin_right = 989.0
+margin_bottom = -547.0
+
+[node name="VirtualJoystick" parent="UI" instance=ExtResource( 7 )]
+position = Vector2( 80, 325 )
 
 [connection signal="text_entered" from="UI/SendTxt" to="UI" method="_on_SendTxt_text_entered"]

@@ -14,10 +14,11 @@ onready var _barSED = find_node("StatsBarSED")
 onready var _barHAM = find_node("StatsBarHAM")
 onready var _goldLabel = find_node("GoldLabel")
 
-
-func initialize(stats:PlayerStats,inventory:Inventory, protocol:GameProtocol) -> void:
-	_spellContainer.intialize(stats, protocol)
-	_inventoryContainer.initialize(inventory, protocol)
+func initialize(player_data:PlayerData, protocol:GameProtocol) -> void:
+	_spellContainer.intialize(player_data.stats, protocol)
+	_inventoryContainer.initialize(player_data.inventory, protocol)
+	
+	var stats = player_data.stats
 	
 	stats.connect("change_hp", self, "_on_change_hp")
 	stats.connect("change_mp", self, "_on_change_mp")

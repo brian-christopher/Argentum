@@ -1,0 +1,91 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://assets/ui/ArkanaLook.png" type="Texture" id=1]
+[ext_resource path="res://ui/SelectBox.gd" type="Script" id=2]
+[ext_resource path="res://assets/fonts/source_code_pro/SourceCodePro-Regular.ttf" type="DynamicFontData" id=3]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 1 )
+region = Rect2( 82, 354, 15, 14 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 1 )
+region = Rect2( 82, 384, 15, 14 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 1 )
+region = Rect2( 82, 369, 15, 14 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 1 )
+region = Rect2( 73, 81, 32, 32 )
+
+[sub_resource type="DynamicFont" id=6]
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+use_filter = true
+font_data = ExtResource( 3 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 491, 21, 21 )
+
+[node name="SelectBox" type="HBoxContainer"]
+margin_right = 275.0
+margin_bottom = 45.0
+script = ExtResource( 2 )
+
+[node name="BtnPrev" type="TextureButton" parent="."]
+margin_right = 45.0
+margin_bottom = 45.0
+rect_min_size = Vector2( 45, 45 )
+texture_normal = SubResource( 1 )
+texture_pressed = SubResource( 2 )
+texture_hover = SubResource( 3 )
+expand = true
+stretch_mode = 5
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+margin_left = 49.0
+margin_right = 226.0
+margin_bottom = 45.0
+size_flags_horizontal = 3
+
+[node name="Background" type="TextureRect" parent="MarginContainer"]
+self_modulate = Color( 0.764706, 0.705882, 0.705882, 1 )
+margin_right = 177.0
+margin_bottom = 45.0
+texture = SubResource( 4 )
+stretch_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer"]
+margin_right = 177.0
+margin_bottom = 45.0
+size_flags_vertical = 5
+custom_fonts/font = SubResource( 6 )
+align = 1
+valign = 1
+
+[node name="Border" type="NinePatchRect" parent="MarginContainer"]
+margin_right = 177.0
+margin_bottom = 45.0
+texture = SubResource( 5 )
+patch_margin_left = 10
+patch_margin_top = 10
+patch_margin_right = 10
+patch_margin_bottom = 10
+
+[node name="BtnNext" type="TextureButton" parent="."]
+margin_left = 230.0
+margin_right = 275.0
+margin_bottom = 45.0
+rect_min_size = Vector2( 45, 45 )
+texture_normal = SubResource( 1 )
+texture_pressed = SubResource( 2 )
+texture_hover = SubResource( 3 )
+expand = true
+stretch_mode = 5
+flip_h = true
+
+[connection signal="pressed" from="BtnPrev" to="." method="_on_BtnPrev_pressed"]
+[connection signal="pressed" from="BtnNext" to="." method="_on_BtnNext_pressed"]

@@ -1,7 +1,6 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://entities/character/Character.gd" type="Script" id=1]
-[ext_resource path="res://entities/character/GrhAnimation.gd" type="Script" id=3]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 16.0
@@ -30,19 +29,14 @@ clip_text = true
 [node name="Outfit" type="Node2D" parent="."]
 
 [node name="Body" type="AnimatedSprite" parent="Outfit"]
-script = ExtResource( 3 )
 
 [node name="Head" type="AnimatedSprite" parent="Outfit"]
-script = ExtResource( 3 )
 
 [node name="Helmet" type="AnimatedSprite" parent="Outfit"]
-script = ExtResource( 3 )
 
 [node name="Weapon" type="AnimatedSprite" parent="Outfit"]
-script = ExtResource( 3 )
 
 [node name="Shield" type="AnimatedSprite" parent="Outfit"]
-script = ExtResource( 3 )
 
 [node name="Effects" type="Node2D" parent="."]
 
