@@ -35,6 +35,7 @@ func _ready() -> void:
 	
 func _on_ThrowDices_pressed():
 	_protocol.write_throw_dices() 
+	_protocol.flush_data()
 
 func _on_select_class(id:int) -> void:
 	_current_class_id = clamp(_current_class_id + id, 1, Global.NUMCLASES)
@@ -65,6 +66,8 @@ func _on_parse_data(packet_id:int, data) -> void:
 			scene.initialize(_protocol)
 			
 			get_parent().switch_scene(scene)
+		GameProtocol.ServerPacketID.ErrorMsg:
+			print(data)
 
 func _on_disconnected():
 	var scene = load("res://scenes/LobbyScene.tscn").instance()
@@ -76,4 +79,9 @@ func _on_BtnExit_pressed() -> void:
 	Connection.disconnect_from_server()
 
 func _on_BtnSubmit_pressed() -> void:
-	pass # Replace with function body.
+	var user_name = find_node("UserName").text
+	var user_password = find_node("UserPassword").text
+	var user_email = find_node("UserEmail").text
+	
+	_protocol.write_login_new_char(user_name, user_password, _current_race_id, _current_gender_id, _current_class_id, user_email, _current_home_id)
+	_protocol.flush_data()

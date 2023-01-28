@@ -24,7 +24,7 @@ var input_map = {
  
 onready var _server_packet_names:Array = GameProtocol.ServerPacketID.keys()
 
-func initiaze(protocol:GameProtocol):
+func initialize(protocol:GameProtocol):
 	_protocol = protocol
 	_player_data = PlayerData.new(Global.MAX_INVENTORY_SLOTS) 
 	
@@ -70,6 +70,9 @@ func _on_parse_data(packet_id:int, data):
 			
 		GameProtocol.ServerPacketID.UpdateSta:
 			_player_data.stats.sta = data
+		
+		GameProtocol.ServerPacketID.NavigateToggle:
+			_player_data.navigated = !_player_data.navigated
 		
 		GameProtocol.ServerPacketID.UpdateUserStats:
 			_parse_update_player_stats(data)
@@ -318,13 +321,20 @@ func _process_movement() -> void:
 		var new_position_x = main_char.grid_position_x + offset.x
 		var new_position_y = main_char.grid_position_y + offset.y
 		
-		if map.can_walk(new_position_x, new_position_y):
+		if legal_position(new_position_x, new_position_y): 
 			main_char.move_to_heading(heading)
 			_protocol.write_walk(heading) 
 		else:
 			if heading != main_char.heading:
 				main_char.heading = heading
 				_protocol.write_change_heading(heading)
+				
+func legal_position(x:int, y:int) -> bool:
+	var map = _map_container.current_map
+	if !map: return false
+	if !map.can_walk(x, y): return false 
+	
+	return true
 		
 func _process(delta: float) -> void:
 	_update_info()
@@ -370,6 +380,10 @@ func get_input_heading() -> int:
 		if Input.is_action_pressed(i):
 			input = input_map[i]
 	return input
+	
+func _notification(what: int) -> void:
+	if what == MainLoop.NOTIFICATION_WM_GO_BACK_REQUEST:
+		_protocol.write_quit()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
@@ -390,3 +404,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			_player_data.using_skill = 0	
 		else:
 			pass 
+
+
+func _on_BtnToggleCombat_pressed() -> void: 
+	_protocol.write_combat_mode_toggle()  

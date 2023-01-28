@@ -429,6 +429,7 @@ func _init_handlers():
 	_handlers[ServerPacketID.UserAttackedSwing] = "_handle_user_attacked_swing"
 	_handlers[ServerPacketID.UserHittedByUser] = "_handle_user_hitted_by_user"
 	_handlers[ServerPacketID.BlockedWithShieldUser] = "_handle_blocked_with_shield_user"
+	_handlers[ServerPacketID.NavigateToggle] = "_handle_navigate_toggle"
 	
 func handle_incoming_data(bytes):
 	var buffer = ByteQueue.new()
@@ -446,6 +447,8 @@ func handle_incoming_data(bytes):
 			break
 	 
 ############################################### INICIO DE HANDLERS ##########################################################################
+func _handle_navigate_toggle(_buffer):
+	pass
 
 func _handle_blocked_with_shield_user(_buffer):
 	return 

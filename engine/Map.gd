@@ -177,7 +177,9 @@ func can_walk(x:int, y:int) -> bool:
 	return true
 
 func hay_agua(x:int, y:int) -> bool:
-	return _flags[x + y * Global.MAP_WIDTH] & TileFlags.Water
+	if _flags[x + y * Global.MAP_WIDTH] & TileFlags.Water:
+		return true
+	return false 
 	
 func _get_map_tiles(data:Dictionary) -> Array:
 	var tiles = []
@@ -285,7 +287,7 @@ func load_map(id:int) -> void:
 			if ((agua_grh >= 1505 && agua_grh <= 1520) or
 				(agua_grh >= 5665 && agua_grh <= 5680) or
 				(agua_grh >= 13547 && agua_grh <= 13562)) and (temp_layer == 0):
-					_flags[x + y * Global.MAP_WIDTH] |= TileFlags.Water
+					_flags[x + y * Global.MAP_WIDTH] = TileFlags.Water | _flags[x + y * Global.MAP_WIDTH]
 				
 	var tiles = _get_map_tiles(
 		{

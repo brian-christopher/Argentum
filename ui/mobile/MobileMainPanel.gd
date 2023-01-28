@@ -16,7 +16,7 @@ onready var _goldLabel = find_node("GoldLabel")
 
 func initialize(player_data:PlayerData, protocol:GameProtocol) -> void:
 	_spellContainer.intialize(player_data.stats, protocol)
-	_inventoryContainer.initialize(player_data.inventory, protocol)
+	_inventoryContainer.initialize(player_data, protocol)
 	
 	var stats = player_data.stats
 	

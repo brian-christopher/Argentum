@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scenes/LobbyScene.gd" type="Script" id=1]
 [ext_resource path="res://scenes/CreateCharacter.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/GameScene.tscn" type="PackedScene" id=3]
+[ext_resource path="res://assets/theme.theme" type="Theme" id=4]
 
 [node name="LobbyScene" type="Node"]
 script = ExtResource( 1 )
@@ -18,6 +19,7 @@ margin_left = -107.5
 margin_top = 25.0
 margin_right = 107.5
 margin_bottom = 85.0
+theme = ExtResource( 4 )
 text = "Salir"
 
 [node name="BtnConnect" type="Button" parent="."]
@@ -29,6 +31,7 @@ margin_left = -107.5
 margin_top = -175.0
 margin_right = 107.5
 margin_bottom = -115.0
+theme = ExtResource( 4 )
 text = "Conectar"
 
 [node name="BtnCreate" type="Button" parent="."]
@@ -40,6 +43,7 @@ margin_left = -107.5
 margin_top = -83.0
 margin_right = 107.5
 margin_bottom = -23.0
+theme = ExtResource( 4 )
 text = "Crear personaje"
 
 [node name="UserName" type="LineEdit" parent="."]
@@ -51,6 +55,7 @@ margin_left = -87.0
 margin_top = -302.0
 margin_right = 87.0
 margin_bottom = -278.0
+theme = ExtResource( 4 )
 align = 1
 
 [node name="UserPassword" type="LineEdit" parent="."]
@@ -62,6 +67,7 @@ margin_left = -87.0
 margin_top = -218.0
 margin_right = 87.0
 margin_bottom = -194.0
+theme = ExtResource( 4 )
 align = 1
 
 [node name="Label" type="Label" parent="."]
@@ -73,6 +79,7 @@ margin_left = -84.0
 margin_top = -267.0
 margin_right = 84.0
 margin_bottom = -214.0
+theme = ExtResource( 4 )
 text = "Contraseña"
 align = 1
 valign = 1
@@ -86,6 +93,7 @@ margin_left = -98.5
 margin_top = -337.0
 margin_right = 98.5
 margin_bottom = -300.0
+theme = ExtResource( 4 )
 text = "Nombre"
 align = 1
 valign = 1

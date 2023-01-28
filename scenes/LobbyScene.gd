@@ -9,9 +9,11 @@ enum State{
 	Create	
 }
  
-const IP_SERVER = "127.0.0.1"#"0.tcp.sa.ngrok.io"#"190.194.38.143"
-const IP_PORT = 443 
+const IP_SERVER = "127.0.0.1"
+const IP_PORT = 443
+ 
 #tcp://0.tcp.sa.ngrok.io:17560 
+#tcp://0.tcp.sa.ngrok.io:15952 
 
 onready var user_name:LineEdit = find_node("UserName")
 onready var user_password:LineEdit = find_node("UserPassword")
@@ -58,7 +60,7 @@ func _on_client_disconnected():
  
 func _on_client_logged():
 	var scene = game_scene.instance()
-	scene.initiaze(_protocol)
+	scene.initialize(_protocol)
 	
 	get_parent().switch_scene(scene)
 

@@ -25,6 +25,7 @@ var stats:PlayerStats
 var inventory:Inventory
 
 var using_skill:= 0
+var navigated = false
 var timers = []
 
 func _init(max_inventory_slots:int) -> void:

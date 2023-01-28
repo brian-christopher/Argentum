@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://ui/inventory/ItemSlot.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/inventory/23.png" type="Texture" id=2]
 [ext_resource path="res://ui/mobile/InventoryContainerMobile.gd" type="Script" id=3]
+[ext_resource path="res://ui/mobile/TouchButton.gd" type="Script" id=4]
 
 [sub_resource type="StyleBoxTexture" id=1]
 texture = ExtResource( 2 )
@@ -228,6 +229,7 @@ focus_mode = 0
 size_flags_horizontal = 3
 enabled_focus_mode = 0
 text = "A"
+script = ExtResource( 4 )
 
 [node name="BtnAttack" type="Button" parent="Buttons/Top"]
 margin_left = 90.0
@@ -237,6 +239,7 @@ focus_mode = 0
 size_flags_horizontal = 3
 enabled_focus_mode = 0
 text = "Ctrl"
+script = ExtResource( 4 )
 
 [node name="Bottom" type="HBoxContainer" parent="Buttons"]
 margin_top = 90.0
@@ -252,6 +255,7 @@ focus_mode = 0
 size_flags_horizontal = 3
 enabled_focus_mode = 0
 text = "C"
+script = ExtResource( 4 )
 
 [node name="BtnUsar" type="Button" parent="Buttons/Bottom"]
 margin_left = 60.0
@@ -261,6 +265,7 @@ focus_mode = 0
 size_flags_horizontal = 3
 enabled_focus_mode = 0
 text = "U"
+script = ExtResource( 4 )
 
 [node name="BtnLag" type="Button" parent="Buttons/Bottom"]
 margin_left = 120.0
@@ -270,5 +275,9 @@ focus_mode = 0
 size_flags_horizontal = 3
 enabled_focus_mode = 0
 text = "L"
+script = ExtResource( 4 )
 
+[connection signal="pressed" from="Buttons/Top/BtnPickup" to="." method="_on_BtnPickup_pressed"]
 [connection signal="pressed" from="Buttons/Top/BtnAttack" to="." method="_on_BtnAttack_pressed"]
+[connection signal="pressed" from="Buttons/Bottom/BtnUsar" to="." method="_on_BtnUsar_pressed"]
+[connection signal="pressed" from="Buttons/Bottom/BtnLag" to="." method="_on_BtnLag_pressed"]
