@@ -1,6 +1,7 @@
 # Info
 esto iba ser un port de android para la 0.12.1, pero por falta de motivacion no creo que llegue a terminarlo.
 No esta terminado, tiene lo basico: caminar, golpear, equipar, usar items. aparte hay errores en las areas y el trigger del agua.
+tampoco sirve el panel de hechizos
 Pase algunos de los recursos del ao clasico a json.
 Para la conexion con el server usa websocket.
 El crearpj no verifica los campos, elimine el lanzar dados y los skills.
