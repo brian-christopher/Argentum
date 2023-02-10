@@ -8,3 +8,4 @@ Primero tenemos que descargar el motor godot desde su pagina(solo necesitan la v
 una vez finalizado, abrimos el engine y le damos click en el boton importar. paso siguiente buscan la carpeta donde esta el cliente y seleccionan el archivo project.godot y le dan a abrir. el proyecto va a tardar un poco en cargar los assets asi que sean pacientes.
 
 y eso es todo.
+https://github.com/brian-christopher/Argentum/blob/main/inicio.png
