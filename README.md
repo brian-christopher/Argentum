@@ -1,5 +1,9 @@
-# Argentum
-port para la 0.12.14
+# Info
+esto iba ser un port de android para la 0.12.1, pero por falta de motivacion no creo que llegue a terminarlo.
+No esta terminado, tiene lo basico: caminar, golpear, equipar, usar items. aparte hay errores en las areas y la trigger del agua.
+Pase algunos de los recursos del ao clasico a json.
+Para la conexion con el server usa websocket
+El crearpj no verifica los campos, elimine el lanzar dados y los skills.
 
 # Como ejecutar el cliente
 Primero tenemos que descargar el motor godot desde su pagina(solo necesitan la version normal sin el soporte para c#)
@@ -9,3 +13,4 @@ una vez finalizado, abrimos el engine y le damos click en el boton importar. pas
 el proyecto va a tardar un poco en cargar los assets asi que sean pacientes.
 
 y eso es todo.
+
