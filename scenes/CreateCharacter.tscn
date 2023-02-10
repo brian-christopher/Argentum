@@ -61,10 +61,10 @@ align = 1
 valign = 1
 
 [node name="Label2" type="Label" parent="CanvasLayer"]
-margin_left = 570.0
-margin_top = 147.0
-margin_right = 820.0
-margin_bottom = 218.0
+margin_left = 532.0
+margin_top = 148.0
+margin_right = 782.0
+margin_bottom = 219.0
 theme = ExtResource( 4 )
 text = "Email
 "
@@ -86,10 +86,10 @@ margin_bottom = 321.4
 theme = ExtResource( 4 )
 
 [node name="UserEmail" type="LineEdit" parent="CanvasLayer"]
-margin_left = 515.0
-margin_top = 242.0
-margin_right = 752.0
-margin_bottom = 280.4
+margin_left = 530.0
+margin_top = 199.0
+margin_right = 767.0
+margin_bottom = 237.4
 theme = ExtResource( 4 )
 
 [node name="SelectClase" parent="CanvasLayer" instance=ExtResource( 2 )]

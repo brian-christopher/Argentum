@@ -70,4 +70,9 @@ position = Vector2( 1071, 433 )
 scale = Vector2( 2.5, 2.5 )
 normal = ExtResource( 9 )
 
+[node name="RichTextLabel" type="RichTextLabel" parent="UI"]
+margin_right = 1085.0
+margin_bottom = 115.0
+scroll_following = true
+
 [connection signal="pressed" from="UI/BtnToggleCombat" to="." method="_on_BtnToggleCombat_pressed"]

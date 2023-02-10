@@ -4,6 +4,7 @@ onready var spellContainer = find_node("SpellContainerGUI")
 onready var inventoryContainer = find_node("InventoryContainerGUI")
 
 onready var _main_panel = find_node("MobileMainPanel") 
+onready var _console = $RichTextLabel
 
 var _protocol:GameProtocol
 var _player_data:PlayerData
@@ -20,7 +21,9 @@ func initialize(player_data:PlayerData, protocol:GameProtocol) -> void:
 	_main_panel.initialize(_player_data, protocol)
 	
 func _on_parse_data(packet_id, data):
-	pass
+	match packet_id:
+		GameProtocol.ServerPacketID.ConsoleMsg:
+			_console.text += data.message + "\n"
 	
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("toggle_combat_mode"):
