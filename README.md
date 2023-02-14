@@ -9,7 +9,7 @@ una vez finalizado, abrimos el engine y le damos click en el boton importar. pas
 
 y eso es todo.
 
-![alt text](https://github.com/brian-christopher/Argentum/blob/main/inicio.png)
+![alt text](https://github.com/brian-christopher/Argentum/blob/main/inicio2.png)
 
 # Server 
 https://github.com/brian-christopher/ArgentumServer
