@@ -11,5 +11,5 @@ y eso es todo.
 
 ![alt text](https://github.com/brian-christopher/Argentum/blob/main/inicio.png)
 
-Server
+# Server
 https://github.com/brian-christopher/ArgentumServer
